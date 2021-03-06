@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bitmingw.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="创业路上从 2017 年 2 月开始，我在 VMware 工作已经有近三年的时间了。前两年在平台组做了一系列项目，大部分和分布式系统治理有关。不能否认在那里学到了很多知识技能，但总有一天我会彻底厌倦看日志修 bug 的循环往复。2019 年 3 月，我换了一个组，投入到了新产品的开发工作中。 进组的时机正逢项目从第一行代码起步。全组像一家创业公司：我们有大致的目标和方向，但所有的宏观设计和微观实现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2019 年终总结">
+<meta property="og:url" content="https://bitmingw.com/2019/12/29/2019-retrospect/index.html">
+<meta property="og:site_name" content="Ming&#39;s Blog">
+<meta property="og:description" content="创业路上从 2017 年 2 月开始，我在 VMware 工作已经有近三年的时间了。前两年在平台组做了一系列项目，大部分和分布式系统治理有关。不能否认在那里学到了很多知识技能，但总有一天我会彻底厌倦看日志修 bug 的循环往复。2019 年 3 月，我换了一个组，投入到了新产品的开发工作中。 进组的时机正逢项目从第一行代码起步。全组像一家创业公司：我们有大致的目标和方向，但所有的宏观设计和微观实现">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2019-12-29-2019-retrospect/NSX-Intelligence-1.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2019-12-29-2019-retrospect/NSX-Intelligence-2.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2019-12-29-2019-retrospect/NSX-Intelligence-3.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2019-12-29-2019-retrospect/steak.jpg">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2019-12-29-2019-retrospect/fish.jpg">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2019-12-29-2019-retrospect/chicken.jpg">
+<meta property="article:published_time" content="2019-12-29T08:00:00.000Z">
+<meta property="article:modified_time" content="2019-12-30T02:17:13.545Z">
+<meta property="article:author" content="Ming Wen">
+<meta property="article:tag" content="memo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bitmingw.github.io/assets/2019-12-29-2019-retrospect/NSX-Intelligence-1.png">
+
+<link rel="canonical" href="https://bitmingw.com/2019/12/29/2019-retrospect/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>2019 年终总结 | Ming's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-57646918-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-57646918-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Ming's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/bitmingw" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://bitmingw.com/2019/12/29/2019-retrospect/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Ming Wen">
+      <meta itemprop="description" content="Knowledge for action">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ming's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2019 年终总结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2019-12-29 00:00:00 / Modified: 18:17:13" itemprop="dateCreated datePublished" datetime="2019-12-29T00:00:00-08:00">2019-12-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/life/" itemprop="url" rel="index"><span itemprop="name">life</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/12/29/2019-retrospect/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/12/29/2019-retrospect/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="创业路上"><a href="#创业路上" class="headerlink" title="创业路上"></a>创业路上</h2><p>从 2017 年 2 月开始，我在 VMware 工作已经有近三年的时间了。前两年在平台组做了一系列项目，大部分和分布式系统治理有关。不能否认在那里学到了很多知识技能，但总有一天我会彻底厌倦看日志修 bug 的循环往复。2019 年 3 月，我换了一个组，投入到了新产品的开发工作中。</p>
+<p>进组的时机正逢项目从第一行代码起步。全组像一家创业公司：我们有大致的目标和方向，但所有的宏观设计和微观实现都需要自己摸索。与许多其他创业公司一样，踩各类知名开源软件的坑是大家都会经历的事情。</p>
+<p>我们的项目决定使用 <a href="https://druid.apache.org/" title="" target="">druid</a> 作为时间序列数据库。新数据通过 <a href="https://kafka.apache.org/" title="" target="">kafka</a> 源源不断进来，经索引后存放在数据库中，这一过程称为数据摄取。官网上的文档和例子还算齐全，示例程序运行起来也一切正常，但换成我们自己的数据后就立刻出现各类错误，以至于不得不深挖源码一探究竟。这么一个看似照葫芦画瓢的任务，最后花费了我三天时间。</p>
+<p>之后我们想比较两种不同的数据摄取方式，其中一种依赖于 twitter 某个 scala 开源库的两年前的代码。那些代码过于古老，存在一系列编译和运行的问题。每一次运行，我都觉得，这是最后一个错误，再过片刻就可以把程序跑通了。但每一次，又会出现新的错误。那些莫名其妙的异常信息迷惑着我，但我没有时间探索这个开源库的细枝末节，与其确切地知道为什么会出错，不如凭借直觉把解决的方法猜出来。经历近一星期的煎熬，我终于跑通了流水线，拿到了两种方案的对比结果。我们最后没有选择这套开源库，但我不认为这是一项做完即被丢弃和遗忘的工作。对创业公司而言，知道为什么某种方式不好，并且有理有据地避开它，可能会在未来节约不小的成本 [1]。</p>
+<p>从三月到九月，经历过一周连续五天的 war room，经历过打团战从上午十点到晚上九点半，经历过周六周日接连两天来公司点外卖，我们终于发布了产品的第一个版本。正当所有人想好好庆祝一下的时候，我们的客服电话被打爆了。</p>
+<span id="more"></span>
+
+<p>用户报告的故障主要来源于证书交换环节，这里面有不少可以算是我的“功劳”。因为本人不是安全专家，以前未曾参与过证书管理相关功能的开发，测试工程师也没有注意到许多企业用户可能会使用自己的证书替换系统默认证书，于是出现了产品部署后因无法建立信任，导致数据摄入失败，服务整体停摆的问题。我和几位同事一道，在一个多月的时间里接听了十几通类似的电话，受到影响的客户包括法国第二大银行 Crédit Agricole 等跨国巨头。万幸的是，这次产品质量风波似乎没有影响到来自第三世界国家的客户，让我避免了被派遣并被暴打一顿的下场 [2]。</p>
+<p>以前我觉得，产品做成什么样子就应该说成什么样子，不能搞虚假宣传。做了这个项目之后，我现在觉得，宣传的效果、做出来的效果，以及客户最后看到的效果，必定是有差别的。如果兢兢业业工作，让这三者之间的差别不那么大，就可以问心无愧了。</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2019-12-29-2019-retrospect/NSX-Intelligence-1.png">
+    <p>产品宣传效果</p>
+</div>
+
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2019-12-29-2019-retrospect/NSX-Intelligence-2.png">
+    <p>内部测试效果</p>
+</div>
+
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2019-12-29-2019-retrospect/NSX-Intelligence-3.png">
+    <p>客户实际运行效果</p>
+</div>
+
+<p>[1] 关于节约成本，我们避开了公司内部某集成测试框架，节省了很多分拣 bug 的时间；我原先的组没有避开公司内部某数据库，导致过长达数月的项目延期。</p>
+<p>[2] 据传闻，某韩国公司的中国分部曾因产品质量问题，试图殴打我公司派遣去现场维护的工程师。</p>
+<br />
+
+<h2 id="不如真人"><a href="#不如真人" class="headerlink" title="不如真人"></a>不如真人</h2><p>我以前是不太拍摄照片的。在亚特兰大，我不过是作业写累了去河边散步，顺手拿出 iPhone 捕捉灿烂的夕阳，或者步道两旁的黄叶。如今，模特的出现，使得摄影的主题发生了巨大变化，同时对摄影效果提出了苛刻的要求。</p>
+<p>首先，给这位模特照相的主要目的是供她发 Instagram，所以那些无足痛痒的街边风景全然没有意义，几乎唯一剩下的主题是记录她的生活点滴。</p>
+<p>第二，虽说现实中不少网红都是拿手机拍照的，但是为了在气势上不输别人，顺便为了拍出更好的效果，一套加装了闪光灯和人像镜头的专业相机还是需要的。不过由于这套器材过于专业，需要额外花时间学习调试，因此也惹出过一些麻烦。</p>
+<p>比如前不久，我和模特下班后去照圣诞节装饰的彩灯。大家都知道这种相片应该怎么照，只要把模特摆在前面，背景是彩灯就可以了。许多人拿出手机之后就像这样咔咔照了，效果也不赖。但是使用专业器材的我，则需要经历一番调试过程才能开工：</p>
+<ol>
+<li>这台相机最常用的配置是光圈优先（A）模式，光圈调整到一个较大的值以提供良好的背景虚化。然后晚上增大曝光补偿，并开启闪光灯给近处的人物补光。快门摁下去，结果发现人照糊了。</li>
+<li>问题在于晚上光线比较暗，相机不能准确测距，再加上大光圈导致景深很浅，人只要稍稍偏离焦点就会糊。于是我把光圈调小到 f/11 又试了几张。</li>
+<li>现在整张照片变得清晰了，但背景有时特别亮，有时又特别暗。这次的问题是，闪光灯通过相机镜头测量环境光来决定功率，然而充满着彩灯的背景适用“测不准原理”，这时候需要手动指定功率。</li>
+<li>最后我换到了手动（M）模式，固定快门时间为 1/60 秒，固定闪光灯功率为 1/16，终于照出了不输于别人用手机拍出的效果。</li>
+</ol>
+<p>不过这个时候的模特，已经冻成了一根冰棍，冷到做不出动作和表情了。</p>
+<p>抛开这些因为不熟悉硬件设备而造成的麻烦，拍摄人像的本质，其实是一个 beautify 的过程，也就是照片中的人，应该要比现实中的人更好看一些。不过残酷的事实告诉我们，拍出 uglify 的照片要比 beautify 的照片容易太多了。要不然我也不会每次拍摄都必定听到下面的质问三连：</p>
+<p align="center">
+    <strong>我有这么矮吗？</strong>
+    <strong>我的脸有这么大吗？？</strong>
+    <strong>我的脸有这么黑吗？？？</strong>
+</p>
+
+<p>从前，有女生为了了解直男的内心世界，下载了虎扑；如今，我为了能拍出 beautify 的照片，下载了小红书。小红书上有很多短视频讲人像摄影的技巧，比如应该把人放在哪里，人占的比例有多大，拿什么道具做什么姿势等等。虽然我心里比较抵制这类抖音式科普，但不得不承认它们还是蛮有用的。当然，即便是购入新型器材，运用摄影技巧，配合滤镜和补正，依然不能保证照片的质量。绝大部分的照片，在构图、表情、动作、服装、光线、背景中的某个细节总会有致命伤，这种情况是要作为废片处理的。能够维持五十度按下快门飞传一张到 Instagram 的出片率，就是我明年的目标了。</p>
+<br />
+
+<h2 id="在家做饭"><a href="#在家做饭" class="headerlink" title="在家做饭"></a>在家做饭</h2><p>一个人生活和两个人生活的主要区别是，一个人生活很少自己做饭，但两个人生活则可以选择在家里做饭。这其中的原因是：做两人份食物花费的时间并不会比一人份食物长太多，也就是说，两个人生活时，做饭的平摊成本比较低。考虑到自己做饭比点外卖要健康，再加上不忍心浪费小可爱精湛的厨艺，我们大多数时间都在家里做饭。</p>
+<p>我的厨艺基础不牢外加荒废多年，需要很多额外指导。刚开始，小可爱会演示做一道菜的过程，然后两天以后我再去重制这道菜。这样的效果并不太好，因为有时会忘记一些关键的步骤，比如腌制五花肉没有放淀粉，最后的口感会很不一样。后来我们尝试过角色扮演，她演大厨我演帮厨，大厨负责提示下一步操作，帮厨负责具体施工。这样的问题在于，帮厨并不太清楚几步之后会发生什么，食材下锅后会因为找不到调味料而手忙脚乱。到最后，我发现还是打开手机 APP 按照菜谱一步步做效果最好。</p>
+<p>在我们制作过的诸多不同类型的菜肴中，最值得拿来炫耀的三种是煎牛排、清蒸鱼和盐酥鸡。</p>
+<p>煎牛排想要做得好吃，有几个特别的要点。首先牛排在下锅之前要用锤子敲扁，其次锅中要倒入黄油而不是食用油，最后煎一些蒜末浇在牛排上面会更好吃。关于第一步我曾经有些困惑：在餐厅吃到的牛排有时候还挺厚的，是因为我们技术不行不能煎太厚的牛排，才需要用锤子敲扁么？后来我才知道，这一步的目的是把肉敲散，遇热收缩之后就不会变得很硬了。</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2019-12-29-2019-retrospect/steak.jpg">
+</div>
+
+<p>清蒸鱼其实是一道没有什么难度的菜，前提是鱼买来的时候就已经处理干净了，否则在厨房还需要进行一些血腥的操作。这道菜我们不常做，主要因为它对食材的要求很高，不新鲜的鱼做出来会很难吃。</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2019-12-29-2019-retrospect/fish.jpg">
+</div>
+
+<p>我们做的盐酥鸡更像是一道小吃。油炸本身没有什么难的，好吃与否的秘方全在于腌制。腌制过程涉及到的材料有好几种，而我从来都分不清楚淀粉、红薯粉、玉米淀粉和糯米淀粉之间的区别，所以腌制的过程只能由小可爱一人承担。刚炸完的盐酥鸡，无论是配番茄酱还是烧肉酱都非常好吃，不过一定要趁热吃完，再次加热的口感就没那么好了。</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2019-12-29-2019-retrospect/chicken.jpg">
+</div>
+
+<p>虽然今年尝试做过不少菜肴，但离开了菜谱的指引还是无法独立动手。中餐存在着很多套路，一些特定的食材有特定的处理方法。现在通过制作不同的菜肴，我隐约发现了一些规律，但没有人指点说在某种情况下为什么要这么做，因此我也不敢在其他菜肴上贸然尝试。我想，或许学习一些有关烹饪的理论（即便它们都是从实践中总结出来的），会比通过实践积累经验进步更快吧。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/memo/" rel="tag"># memo</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/08/28/ubuntu-update-alternatives/" rel="prev" title="Changing the Default Program with update alternatives">
+      <i class="fa fa-chevron-left"></i> Changing the Default Program with update alternatives
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/12/migrate-local-vm-to-esxi/" rel="next" title="Migrate VMware Workstation / Fusion VM to ESXi">
+      Migrate VMware Workstation / Fusion VM to ESXi <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E4%B8%9A%E8%B7%AF%E4%B8%8A"><span class="nav-number">1.</span> <span class="nav-text">创业路上</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%A6%82%E7%9C%9F%E4%BA%BA"><span class="nav-number">2.</span> <span class="nav-text">不如真人</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E5%AE%B6%E5%81%9A%E9%A5%AD"><span class="nav-number">3.</span> <span class="nav-text">在家做饭</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Ming Wen"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Ming Wen</p>
+  <div class="site-description" itemprop="description">Knowledge for action</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">94</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/bitmingw" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;bitmingw" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/bitmingw" title="LinkedIn → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;bitmingw" rel="noopener" target="_blank"><i class="fa fa-fw fa-linkedin"></i>LinkedIn</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/omegaenming/" title="Douban → https:&#x2F;&#x2F;www.douban.com&#x2F;people&#x2F;omegaenming&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Douban</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://feedburner.google.com/fb/a/mailverify?uri=bitmingw/hexo-blog" title="Subscriber → https:&#x2F;&#x2F;feedburner.google.com&#x2F;fb&#x2F;a&#x2F;mailverify?uri&#x3D;bitmingw&#x2F;hexo-blog" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Subscriber</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2014 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ming Wen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://bitmingwblog.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://bitmingw.com/2019/12/29/2019-retrospect/";
+    this.page.identifier = "2019/12/29/2019-retrospect/";
+    this.page.title = "2019 年终总结";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://bitmingwblog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

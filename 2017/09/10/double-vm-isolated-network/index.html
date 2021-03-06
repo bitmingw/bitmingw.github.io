@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bitmingw.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="本文将以 VirtualBox + ubuntu + tor 为例，详细讲解搭建双虚拟机隔离上网环境的方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="双虚拟机隔离上网完整教程">
+<meta property="og:url" content="https://bitmingw.com/2017/09/10/double-vm-isolated-network/index.html">
+<meta property="og:site_name" content="Ming&#39;s Blog">
+<meta property="og:description" content="本文将以 VirtualBox + ubuntu + tor 为例，详细讲解搭建双虚拟机隔离上网环境的方法。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/virtualbox-nat-network.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/virtualbox-nat-network-config.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/virtualbox-host-only-network.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/virtualbox-host-only-network-config-adapter.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/virtualbox-host-only-network-config-dhcp.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-config-adapter-1.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-config-adapter-2.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-install-config-primary-nic.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-network-card.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-edit-nat-connection.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-edit-host-only-connection.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tclient-config-adapter-1.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tclient-edit-host-only-connection.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tclient-edit-proxy-setting.png">
+<meta property="article:published_time" content="2017-09-10T07:00:00.000Z">
+<meta property="article:modified_time" content="2017-09-30T23:44:15.935Z">
+<meta property="article:author" content="Ming Wen">
+<meta property="article:tag" content="network">
+<meta property="article:tag" content="firewall">
+<meta property="article:tag" content="proxy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/virtualbox-nat-network.png">
+
+<link rel="canonical" href="https://bitmingw.com/2017/09/10/double-vm-isolated-network/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>双虚拟机隔离上网完整教程 | Ming's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-57646918-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-57646918-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Ming's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/bitmingw" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://bitmingw.com/2017/09/10/double-vm-isolated-network/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Ming Wen">
+      <meta itemprop="description" content="Knowledge for action">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ming's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          双虚拟机隔离上网完整教程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-09-10 00:00:00" itemprop="dateCreated datePublished" datetime="2017-09-10T00:00:00-07:00">2017-09-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2017-09-30 16:44:15" itemprop="dateModified" datetime="2017-09-30T16:44:15-07:00">2017-09-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tutorial/" itemprop="url" rel="index"><span itemprop="name">tutorial</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/09/10/double-vm-isolated-network/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/09/10/double-vm-isolated-network/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本文将以 VirtualBox + ubuntu + tor 为例，详细讲解搭建双虚拟机隔离上网环境的方法。</p>
+<span id="more"></span>
+
+<h2 id="原材料"><a href="#原材料" class="headerlink" title="原材料"></a>原材料</h2><ul>
+<li>VirtualBox</li>
+<li>Ubuntu Linux 16.04 镜像</li>
+</ul>
+<h2 id="隔离上网原理"><a href="#隔离上网原理" class="headerlink" title="隔离上网原理"></a>隔离上网原理</h2><p>双虚拟机隔离网络的拓扑结构如下图所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">    INTERNET (via VirtualBox&#x2F;Host)</span><br><span class="line">        |</span><br><span class="line">        |  NAT [10.0.2.101 &#x3D;&#x3D;&gt; 10.0.2.2]</span><br><span class="line">        |</span><br><span class="line">|--------------|</span><br><span class="line">|              |</span><br><span class="line">|    SERVER    |    192.168.56.101:9150 &#x3D;&#x3D;&gt; tor</span><br><span class="line">|              |    tor &#x3D;&#x3D;&gt; tor proxy network</span><br><span class="line">|--------------|</span><br><span class="line">        |</span><br><span class="line">        |  Host-Only [192.168.56.101]</span><br><span class="line">        |</span><br><span class="line">        |  Host-Only [192.168.56.102]</span><br><span class="line">        |</span><br><span class="line">|--------------|</span><br><span class="line">|              |    127.0.0.1:8118 &#x3D;&#x3D;&gt; privoxy</span><br><span class="line">|    CLIENT    |    privoxy &#x3D;&#x3D;&gt; 192.168.56.101:9150</span><br><span class="line">|              |</span><br><span class="line">|--------------|</span><br></pre></td></tr></table></figure>
+
+<p>双虚拟机隔离上网需要三个计算机系统同时参与，这三个系统分别称为 <code>host</code>，<code>server</code> 和 <code>client</code>。host 是 server 与 client 这两台虚拟机的宿主，负责提供硬件资源和互联网的最终接入点。server 有两块网卡，其中一块通过 NAT 与 host 相连，获取互联网连接；另一块与 host-only network 相连。client 只有 host-only network 一块网卡，因此它只能与 server 通信，没有直接访问互联网的能力。由于 client 的网络流量需要经过 server 转发，如果 server 能够确保这些流量通过特定的隐匿代理（比如 tor），那么 client 的上网流量就是安全的。</p>
+<h2 id="配置-VirtualBox-网络环境"><a href="#配置-VirtualBox-网络环境" class="headerlink" title="配置 VirtualBox 网络环境"></a>配置 VirtualBox 网络环境</h2><p>为了在 host 中搭建网络环境，需要在 VirtualBox 中修改如下配置。</p>
+<p>打开 VirtualBox -&gt; File -&gt; Preferences -&gt; Network</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/virtualbox-nat-network.png">
+    <p>创建 NAT Network</p>
+</div>
+
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/virtualbox-nat-network-config.png">
+    <p>配置 NAT Network</p>
+</div>
+
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/virtualbox-host-only-network.png">
+    <p>进入 Host-Only Network 设定</p>
+</div>
+
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/virtualbox-host-only-network-config-adapter.png">
+    <p>修改 Host-Only Network 网络地址</p>
+</div>
+
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/virtualbox-host-only-network-config-dhcp.png">
+    <p>修改 Host-Only Network DHCP 地址</p>
+</div>
+
+<p>本文中涉及的 IP 地址和端口号均可以改为其他数值，只需要保证各处的修改一致即可。</p>
+<h2 id="安装-server-与-client-虚拟机"><a href="#安装-server-与-client-虚拟机" class="headerlink" title="安装 server 与 client 虚拟机"></a>安装 server 与 client 虚拟机</h2><p>我们在 VirtualBox 中创建两个新的虚拟机，分别命名为 <code>server</code> 和 <code>client</code>（或者任何你喜欢的名字）。在 server 的配置选项卡中启用 NAT Network 和 Host-Only Network 两个网络适配器，而在 client 中只启用 <strong>NAT Network</strong> 一个适配器。待配置完成后，分别安装这两个系统。</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-config-adapter-1.png">
+</div>
+
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-config-adapter-2.png">
+</div>
+
+<p>在安装 server 时，可能会出现需要选择主网卡的情况，此时请选取 NAT Network 对应的网卡。</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-install-config-primary-nic.png">
+</div>
+
+<p>两个系统分别安装完毕后，进入下一节。</p>
+<h2 id="在-server-中配置网卡"><a href="#在-server-中配置网卡" class="headerlink" title="在 server 中配置网卡"></a>在 server 中配置网卡</h2><p>我们的 server 有两块网卡，<code>enp0s3</code> 与 NAT Network 相连，<code>enp0s8</code> 与 Host-Only Network 相连。尽管 VirtualBox 为上述两个网络提供了自动分配 IP 地址的 DHCP 服务器，但为了保证 client 总能找到 server，需要为 server 分配固定的 IP 地址。修改 IP 地址的方法有多种，既可以用 <code>ip</code> 指令，也可以直接修改 <code>/etc/network/interfaces</code> 文件，还可以使用图形用户界面。在这里使用最简单的图形界面方式进行讲解。</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-network-card.png">
+    <p>进入系统设置 Network 选项卡</p>
+</div>
+
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-edit-nat-connection.png">
+    <p>修改 NAT Network 设定</p>
+</div>
+
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-edit-host-only-connection.png">
+    <p>修改 Host-Only Network 设定，其中 Gateway 空着不填</p>
+</div>
+
+<p>请勿修改 Network proxy 的任何设定，保持不使用代理。</p>
+<h2 id="在-server-中配置-tor-代理"><a href="#在-server-中配置-tor-代理" class="headerlink" title="在 server 中配置 tor 代理"></a>在 server 中配置 tor 代理</h2><p>接下来，在 server 中安装 tor 隐匿代理。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install tor</span><br></pre></td></tr></table></figure>
+
+<p>通常，按此种方式安装的 tor 会在开机时自动启动。请使用 <code>systemctl is-enabled tor</code> 加以确认。如果返回的结果不是 enabled，需要通过 <code>sudo systemctl enable tor</code> 设置自启动。</p>
+<p>我们还可以使用如下的指令控制 tor 的行为。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start tor    <span class="comment"># 启动 tor 代理</span></span><br><span class="line">systemctl status tor        <span class="comment"># 查看 tor 运行状态</span></span><br><span class="line">sudo systemctl stop tor     <span class="comment"># 关闭 tor 代理</span></span><br><span class="line">sudo systemctl restart tor  <span class="comment"># 重启 tor 代理</span></span><br></pre></td></tr></table></figure>
+
+<p>tor 代理的配置文件位于 <code>/etc/tor/torrc</code> 路径下。我们先关闭 tor 代理，对那个文件做一些必要的修改，再启动它。</p>
+<p>在配置文件头部附近可以找到这样一行话：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## Tor opens a SOCKS proxy on port 9050 by default --</span></span><br></pre></td></tr></table></figure>
+
+<p>在这一段注释的后面加上如下两行内容：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SOCKSPort 192.168.56.101:9050</span><br><span class="line">SOCKSPolicy accept *</span><br></pre></td></tr></table></figure>
+
+<p>IP 地址 192.168.56.101 与先前 enp0s8 的 IP 地址对应。这两行设置的意思是，放行所有进入 192.168.56.101:9050 的流量，并通过 tor 代理转发它们。</p>
+<p>保存配置文件，重启 tor 代理，这一步到此完成。</p>
+<h2 id="在-client-中配置-socks-代理"><a href="#在-client-中配置-socks-代理" class="headerlink" title="在 client 中配置 socks 代理"></a>在 client 中配置 socks 代理</h2><p>下一步，我们需要让 client 的网络流量通过 192.168.56.101:9050 这个 tor 提供的 socks 代理。我们将使用 <code>privoxy</code> 完成大部分的任务。</p>
+<p>首先依旧是安装软件包。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install privoxy</span><br></pre></td></tr></table></figure>
+
+<p>privoxy 默认也是开机自启动的，可以用 <code>systemctl is-enabled privoxy</code> 进行验证。它的配置文件位于 <code>/etc/privoxy/config</code>。这个配置文件很长，请翻到 5.2 节，并在该节末尾处填写这两行内容：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">forward-socks5t / 192.168.56.101:9050 .</span><br><span class="line">forward localhost/ .</span><br></pre></td></tr></table></figure>
+
+<p>意思是，除了访问 localhost 以外，其他流量会经过 socks 5 协议转发到 192.168.56.101:9050 端口上。随后，这些流量会进一步被 tor 监听和转发，从而实现隐匿的目的。</p>
+<h2 id="重定向-client-流量"><a href="#重定向-client-流量" class="headerlink" title="重定向 client 流量"></a>重定向 client 流量</h2><p>我们已经配置好了 client 的转发规则，但现在 client 使用的依旧是 NAT Network，它与 server 的单向连接还没有打通。现在请关闭 client 虚拟机，在 VirtualBox 中把 client 的网络适配器改为 <strong>Host-Only Network</strong>，如下图所示。</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tclient-config-adapter-1.png">
+</div>
+
+<p>重新启动 client 虚拟机，我们还需要为它分配固定的 IP 地址，并指定全局代理。</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tclient-edit-host-only-connection.png">
+</div>
+
+<p>由于 privoxy 默认监听 localhost 的 8118 端口，我们可以这样设置系统的全局代理：</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tclient-edit-proxy-setting.png">
+</div>
+
+<p>大功告成！</p>
+<h2 id="在-client-中为-ssh-配置代理"><a href="#在-client-中为-ssh-配置代理" class="headerlink" title="在 client 中为 ssh 配置代理"></a>在 client 中为 ssh 配置代理</h2><p>在上一节中，我们在 client 中为 HTTP/HTTPS/Socks 设置了 privoxy 代理，但这并没有涵盖其他网络协议。假如你需要透过代理创建一个 ssh 链接，那么需要为 ssh 单独设置代理。</p>
+<p>ssh 的设置文件位于 <code>~/.ssh/config</code> 下，如果没有这个文件请创建它。然后填写下面三行内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Host *</span><br><span class="line">    ProxyCommand nc -X connect -x 127.0.0.1:8118 %h %p</span><br><span class="line">    ServerAliveInterval 30</span><br></pre></td></tr></table></figure>
+
+<p>这三行的大意是，对于任意目的地的 ssh 链接，通过 127.0.0.1:8118 端口进行转发，链接在 30 秒无响应之后自动切断。这样，就可以通过双虚拟机隔离上网使用 ssh 了。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/network/" rel="tag"># network</a>
+              <a href="/tags/firewall/" rel="tag"># firewall</a>
+              <a href="/tags/proxy/" rel="tag"># proxy</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/09/09/nsx-transformers-dropkick-dev-note/" rel="prev" title="NSX Transformers [Dropkick] 开发后记">
+      <i class="fa fa-chevron-left"></i> NSX Transformers [Dropkick] 开发后记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/10/08/fast-grep-the-silver-searcher/" rel="next" title="the silver searcher：快如闪电的 grep">
+      the silver searcher：快如闪电的 grep <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E6%9D%90%E6%96%99"><span class="nav-number">1.</span> <span class="nav-text">原材料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%94%E7%A6%BB%E4%B8%8A%E7%BD%91%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">隔离上网原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-VirtualBox-%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83"><span class="nav-number">3.</span> <span class="nav-text">配置 VirtualBox 网络环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-server-%E4%B8%8E-client-%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="nav-number">4.</span> <span class="nav-text">安装 server 与 client 虚拟机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-server-%E4%B8%AD%E9%85%8D%E7%BD%AE%E7%BD%91%E5%8D%A1"><span class="nav-number">5.</span> <span class="nav-text">在 server 中配置网卡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-server-%E4%B8%AD%E9%85%8D%E7%BD%AE-tor-%E4%BB%A3%E7%90%86"><span class="nav-number">6.</span> <span class="nav-text">在 server 中配置 tor 代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-client-%E4%B8%AD%E9%85%8D%E7%BD%AE-socks-%E4%BB%A3%E7%90%86"><span class="nav-number">7.</span> <span class="nav-text">在 client 中配置 socks 代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%AE%9A%E5%90%91-client-%E6%B5%81%E9%87%8F"><span class="nav-number">8.</span> <span class="nav-text">重定向 client 流量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-client-%E4%B8%AD%E4%B8%BA-ssh-%E9%85%8D%E7%BD%AE%E4%BB%A3%E7%90%86"><span class="nav-number">9.</span> <span class="nav-text">在 client 中为 ssh 配置代理</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Ming Wen"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Ming Wen</p>
+  <div class="site-description" itemprop="description">Knowledge for action</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">94</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/bitmingw" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;bitmingw" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/bitmingw" title="LinkedIn → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;bitmingw" rel="noopener" target="_blank"><i class="fa fa-fw fa-linkedin"></i>LinkedIn</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/omegaenming/" title="Douban → https:&#x2F;&#x2F;www.douban.com&#x2F;people&#x2F;omegaenming&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Douban</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://feedburner.google.com/fb/a/mailverify?uri=bitmingw/hexo-blog" title="Subscriber → https:&#x2F;&#x2F;feedburner.google.com&#x2F;fb&#x2F;a&#x2F;mailverify?uri&#x3D;bitmingw&#x2F;hexo-blog" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Subscriber</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2014 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ming Wen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://bitmingwblog.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://bitmingw.com/2017/09/10/double-vm-isolated-network/";
+    this.page.identifier = "2017/09/10/double-vm-isolated-network/";
+    this.page.title = "双虚拟机隔离上网完整教程";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://bitmingwblog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

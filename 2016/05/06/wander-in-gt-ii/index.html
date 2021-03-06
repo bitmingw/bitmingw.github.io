@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bitmingw.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="毫无疑问，这是有史以来最为紧凑和充实的一个学期。整个学期以三月十日为界，可以分成两段。第一段在玩命地找工作，第二段在玩命地写作业和做项目，把第一段欠下的债还回来。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在 GT（中）">
+<meta property="og:url" content="https://bitmingw.com/2016/05/06/wander-in-gt-ii/index.html">
+<meta property="og:site_name" content="Ming&#39;s Blog">
+<meta property="og:description" content="毫无疑问，这是有史以来最为紧凑和充实的一个学期。整个学期以三月十日为界，可以分成两段。第一段在玩命地找工作，第二段在玩命地写作业和做项目，把第一段欠下的债还回来。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2016-05-06-wander-in-gt-ii/CSE6240.jpg">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2016-05-06-wander-in-gt-ii/aws.jpg">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2016-05-06-wander-in-gt-ii/php.jpg">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2016-05-06-wander-in-gt-ii/nuclear.jpg">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2016-05-06-wander-in-gt-ii/github.jpg">
+<meta property="article:published_time" content="2016-05-06T07:00:00.000Z">
+<meta property="article:modified_time" content="2017-07-08T16:39:18.305Z">
+<meta property="article:author" content="Ming Wen">
+<meta property="article:tag" content="memo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bitmingw.github.io/assets/2016-05-06-wander-in-gt-ii/CSE6240.jpg">
+
+<link rel="canonical" href="https://bitmingw.com/2016/05/06/wander-in-gt-ii/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>在 GT（中） | Ming's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-57646918-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-57646918-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Ming's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/bitmingw" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://bitmingw.com/2016/05/06/wander-in-gt-ii/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Ming Wen">
+      <meta itemprop="description" content="Knowledge for action">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ming's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          在 GT（中）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-05-06 00:00:00" itemprop="dateCreated datePublished" datetime="2016-05-06T00:00:00-07:00">2016-05-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2017-07-08 09:39:18" itemprop="dateModified" datetime="2017-07-08T09:39:18-07:00">2017-07-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/life/" itemprop="url" rel="index"><span itemprop="name">life</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2016/05/06/wander-in-gt-ii/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/05/06/wander-in-gt-ii/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>毫无疑问，这是有史以来最为紧凑和充实的一个学期。整个学期以三月十日为界，可以分成两段。第一段在玩命地找工作，第二段在玩命地写作业和做项目，把第一段欠下的债还回来。</p>
+<span id="more"></span>
+
+<br />
+
+<h2 id="卖身指南"><a href="#卖身指南" class="headerlink" title="卖身指南"></a>卖身指南</h2><p>早在上个学期，我就下定了决心，这个学期一定要找到暑期实习，不能再让学校里水水的课程作业在简历里充数了。虽然期间多次感觉药丸，但一直都没有放弃希望。这信心与激励主要来自两个方面。首先，码农找实习是公认的简单模式，别的专业找不到实习是可以找客观原因的，码农找不到实习是没有客观原因的。其次，找份实习确实是一笔油水巨大的交易，投资回报率非常可观。如果定位加州，刨去 Facebook 这种工资水平 out of range 的企业，在 competitive 和 very competitive 段，待遇都是相当不错的。通常，实习生要么可以拿搬迁费/住房补贴，要么住公司的公寓，房租这块儿最大的开销是不用操心的，因此工资也就几乎成了纯利。按税后 4k-5k 的标准算，三个月的实习收入几乎可以抵掉一个学期的学费。就找实习来说，从包装简历开始，到刷题、参加招聘会、面试，不过需要花去 100-200 小时。平摊到每个小时上的潜在利润，竟可达 100 USD. 这年头除了犯罪和创业，这种高回报投资项目已经不好找了。</p>
+<p>做完了理论分析，下面该讲讲实验流程了。上个学期我投了一家 HFT 公司 [1], 面试的小哥在听我扯完那浮夸的毕业设计之后，给了我一个现场面试的机会，这就有了刚放寒假时远赴芝加哥的一幕。公司不大，却租下了交易所对面写字楼的大半层，一看就是不差钱的主。不过当我听说这家公司经过四年的发展才只有 30 人口时，我就意识到这是个高手云集之地，不适合我等游民闲逛。当天一起来面试的还有某不知名学校的 CS 本科生。看到她简历上的俄罗斯方块，我不由得一惊，难道是个人就可以给现场面试么？面试的流程比较特殊，上午是 90 分钟做三道题，自由安排时间。下午是行为面试和对三道题的分析。解题不是用白板，而是用 chrome book. 虽说有 gedit, nano 和 vim 三种编辑器可选，但其中的任何一个用起来都是无比蛋疼。没有 <code>.vimrc</code> 的 vim, 打个花括号都不能自动对齐，缩进还是 8 个空格长度，随便写一句就要换行，简直惨不忍睹。我很想知道，这家公司口口声声称“模拟实际生产环境”，难道你们的员工用的都是这种未经调教过的东西？还是说徒手配置开发环境的能力也是考察的对象呢？被编辑器折磨了一个半小时，我总算做完了其中的两个题。本以为还是蛮有希望的，到下午的开奖时间就呵呵了：一个题结果不正确，另一个干脆连题都看错了。这种毫无反馈、限时提交的流程倒还真像实际的工程环境。这次面试的收获，不外乎感受了一下非主流的现场面试，另外免费在芝加哥玩了一天。工业时代的街景和密西根湖都很漂亮，差点儿就浪过了没有赶上回程的飞机。</p>
+<p>寒假除了在纽约耗散了八天时光，剩下的日子大抵是在以一天 10 题的速度刷 lintcode. 简历上新增的图形学装逼条目十分抢眼（大部分都是 CS PhD 队友做的），我在开学之初顺利收割了一批面试。这里面有 career buzz 上投的 VMware, 有 monster 上投的 Pure Storage, 也有招聘会上给的 MathWorks 和 Nvidia，还有找人内推的 Amazon. 所以说，找实习的第一条准则是</p>
+<blockquote>
+<p>覆盖各大渠道，全面撒网。</p>
+</blockquote>
+<p>列举这几家公司，是因为他们的面试风格都各具特色。先说 Pure Storage, 这家公司的主打是高性能存储服务，技术栈沿C佳佳一路展开，这一点跟我很匹配。找实习的第二条准则是</p>
+<blockquote>
+<p>主打一个技术栈。</p>
+</blockquote>
+<p>我从上个学期就确立了专攻C佳佳的战略方针。就算 Java 的岗位数目占有绝对优势，也不会轻易投 Java 为主的工作，更不会贸然涉及 data science 领域。面试时尽量写C佳佳，这样就不至于把不同语言记混。Pure Storage 的一面是分析一段C佳佳的多重继承，要求口述构造函数与析构函数的调用过程，以及内存结构云云。幸好我在 glassdoor 上看到了相关面经，顺利过关。二面据称是两个算法题里面抽一个做。我事先把这两个题的答案都打印出来了，面试时却突然变卦，出了一道多线程编程。当时从未写过多线程的我顿时蒙逼。面试官一再提示有死锁，我就是毫无头绪，最后错失了一家 very competitive 级的公司。找实习的第三条准则是</p>
+<blockquote>
+<p>glassdoor 上的面经要看，但不可全信。</p>
+</blockquote>
+<p>MathWorks 和 Nvidia 这两家的面试用奇葩来形容绝不过分。MathWorks 作为 MATLAB 的开发商，竟对面试者的 MATLAB 水平没有丝毫要求。它的面试内容自选，就像 KTV 点歌一样，可以选择考 DSP, 控制，嵌入式，代数，微分方程，以及各种程序语言。这简直就是面向广大自动化专业学生量身打造的啊！我选了考C佳佳，然后迎面而来的就是一坨从未见识过的代码。我相信这地球上除了那些被公司开除想要报仇雪恨的程序员，和那些想要隐藏真实目的的黑客之外，不会再有什么人写故意让别人看不懂的代码了。那些要求我口述运行结果的题，恐怕多数是不能通过编译的；而那些貌似不能通过编译的写法，或许只是C佳佳允许的另一种写法而已。而 MathWorks 出这种面试题，似乎从一个侧面曝光了公司的阴暗面：发的钱太少，员工不满意，新来的要有能力对付老员工埋下的地雷。例如经过三天毫无进展的 debug 之后，忽然灵光一现，在某个头文件里找到了 bug 的根源</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> true (true &amp;&amp; (rand() &gt; RAND_MAX &gt;&gt; 4))</span></span><br></pre></td></tr></table></figure>
+
+<p>Nvidia 这些年乘着深度学习的东风开始风生水起。然而他们的岗位，一般人可消受不起。给我面试的 graphic driver 组，是专写内核C语言的。第一场面试内容是徒手实现 tail, 这是整个学期面试中最出彩的一场，我仅用 20 分钟就一气呵成实现了 bug free. 写惯了 <code>cout</code> 的我换手搞起 <code>printf</code>，竟觉得切换自如。第二场 hiring manager 先是问了 crontab 和 dmesg, 我没有答到点上，却也不足以致命。随后他又听说我并不会 OpenGL, 遂当面宣读了拒信。这家就这么稀里糊涂地挂掉了。</p>
+<p>对于 Amazon 我只想说一句话：简历投得早，可以保底；简历投得晚，没有卵用。</p>
+<p>VMware 是这学期面试流程的最长的一家公司。即便不算那个暴难的 OA [2] 也有足足四轮面试，包括一轮在校和三轮电话，持续了整整一个月。在校的面试官是个中国人，还问了我学校的中文名称。面试问题稀奇古怪，我也答得支支吾吾。最后写了两个白板，一个 Python 和一个C佳佳。面试官貌似对这两种语言都不熟，第一个程序生生敲进了 mac 里跑测试，第二个程序不得不向我询问语法。可能是他确实没办法挑毛病，让我顺利进入下一轮。HR 人很不错，会跟我发短信而不是发邮件，因此回复效率超快，跟 Amazon 相比岂止是一个天上一个地下，明明是差了十八层好嘛。后来把我匹配到了一个做 SDN [3] 的组，经历了两轮三哥蹂躏，最终拿到了一个宝贵的 offer. 最近我又听说实习期间与我同住一屋的也是一个三哥。看来真的要学会打入三哥内部才行啊！</p>
+<p>因为收的面试足够多，这个学期没有大范围找内推，也没有相关可以分享的经历。于是在这里我还是谈一谈 OA 吧。很多人都反感 OA, 觉得它把投一家公司所需的时间从 5 分钟拉长到了一个小时，是无法容忍的。但我觉得 OA 对咱们这种新手是很有利的。在大多数情况下，只要投了简历都会给 OA, 通过 OA 的申请者几乎都能拿到面试，这就取代了简历在拿一轮面试中的核心地位。这一点对经历不够丰富的同学尤为有用。我就通过 OA 拿到了 Fidessa 等公司的面试。即便你真的靠简历就可以打遍天下了，做 OA 练练手也不见得是坏事。</p>
+<p>总结起来便是，对于码农岗来说，找实习真的不是一件难事。据称今年 GT 计算学院中国学生的实习率是 100%. 即便 ECE 先前没有实习的学长今年也都拿到了非常不错的全职 offer. 在这里祝愿大家都能有所收获。</p>
+<p>[1] HFT: high frequency trading<br>[2] OA: online assessment<br>[3] SDN: software defined network</p>
+<br />
+
+<h2 id="善守者不必善攻"><a href="#善守者不必善攻" class="headerlink" title="善守者不必善攻"></a>善守者不必善攻</h2><p>本学期选了五门神课，到不是因为我想要体验英雄般的夸张悲壮，而是真的选了一手好课哪个都不舍得退。这里面我最喜欢的当属 Network Security, 只因为这门课的 lab 给我们提供了一次当黑客的机会。</p>
+<p>Lab 的规则很简单，在同一个局域网里，大家都用一样的系统，装一系列应用，然后开始互相黑。我很早就发现老师提供的安装盘有猫腻，会留下一系列后门，只要用 <code>netstat</code> 看一下，就可以察觉到几个奇怪的监听端口——它们必定是用来远程登录的。当时我一心想着加固自己的机器，并且估计其他组也可以发现这些问题，就把这几个后门删了，转而寻求其他的突防途径。因为可以通过抓包的方式捕获其他机器的密码，突防的重点自然就放在了本地权限提升上。</p>
+<p>在 lab 前的那个下午，我在 google 上转了一圈又一圈，找到了好几种提权的攻击方法。逐一试验，却毫无成效。后来又搬上了 metaspliot 这个重型渗透平台，尝试了好几个漏洞，依旧无法提权。像 ubuntu 8.04 这种老爷版本的系统都黑不了，不是因为这个系统不好黑，而是因为我真的脸太黑啊！思忖许久，我又想到了那几个后门，说不定可以利用一下。</p>
+<p>我试着用 <code>netcat</code> 给那几个监听端口发消息，都毫无回应。我想到应该需要输入正确的密码才行，可是怎么找到他们的密码呢？这几个后门，有像 <code>hole</code> 这样名字直白的，也有像 <code>worldending</code> 和 <code>ww2</code> 这样雷人的。google 上断然找不到任何结果。于是我拿 <code>hexdump</code> 扫了眼二进制字符串，大抵也是系统调用的函数名，看不出什么特别之处。这场景，就好像恐怖分子冲进了发射井，却不知道核弹的发射密码一样。一个小时之后，我最终决定放弃搜寻，而密码，就从我眼皮底下溜走了。</p>
+<p>除了这一系列的后门，还有一个貌似无害实则剧毒的程序以 root 权限运行着。在提供正确的密码之后，它可以运行一条由其他机器发来的指令。而这条指令，只要与分号配合使用，就能分身有数，发挥出无穷的威力来。这种严重的隐患，自然不能逃过我的眼睛。我不仅堵上了这个缺口，还设置了&quot;nizhidaomimayemeiyouyong&quot;这个密码，宣誓本系统的安全性。Lab 结束之后，还真有人问我的密码是不是“你知道密码也没有用”，我说是的，因为确实没人能黑得了我们。</p>
+<p>参加 lab 的十个队里面有一队组特别牛，他们发现了其中一个后门的密码，在第一天就顺利黑掉了七个队。也就是说，至少有七个队还不知道自己的系统有后门这回事。另外一个队好像是通过社会工程学手段，知道这个队在每个被黑掉的系统里又建了一个有 root 权限的新用户，于是他们在第二天利用这些遗产也黑掉了好几个队。最后局势发生了变化，最牛的那个队竟然被来自中国的远程学习队黑掉了！我朝的蓝翔就是威武！</p>
+<p>经过两天的 lab, 我们成为了唯一一个没有被黑的队。这值得赞赏，却并非大家的期待。</p>
+<br />
+
+<h2 id="失落的教主"><a href="#失落的教主" class="headerlink" title="失落的教主"></a>失落的教主</h2><p>槽点最多的课当属 CSE6240 Web Search and Text Mining. 这门课有两个教师，仅此一点就不同寻常。其中一个老师A经常见不到人，而另一个老师N大家都不想见到他。既然是这么有魔力（斥力）的人，就封他个教主的称号吧。教主最大的特点就是上课前五分钟会放一段音乐，然后进入有奖问答环节：我今天放的是什么歌呀？这本是个很有挑战性的问题，不过自从我在手机上装了 Shazam 这个识歌应用之后再也没有失手过。放歌只是他自嗨的前奏，讲课时的兴奋才是重点。讲台前面的空间不够大，他就非得绕着教室走一圈，然后顺便看看有多少学生在上 Facebook. 有时候他会在白板上写字，可是字迹太小根本无法辨认，我们只好拿手机去照，这时候他会摆个剪刀手的姿势。后来他可能意识到整个教室只有他一个人在嗨，学生都不理他，所以他就开始想方设法撩学生。有次一个同学在桌上放了根香蕉，他就说这香蕉是我的。快下课的时候那个学生把香蕉吃掉了，他又跟了一句：“我的香蕉被吃了”。另一节课上他在口袋里装了一把糖，回答问题的同学都有糖可以吃。看到这一幕我不得不感慨：XXXX 啊！最后一节课上，他可能终于意识到了这样下去是徒劳无益的，ML 并不能让同学们热血沸腾，但他依然试图发出最后的呐喊，唤醒那些麻木不仁的学生：</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2016-05-06-wander-in-gt-ii/CSE6240.jpg">
+</div>
+
+<p>没错，这次他选择了站在桌子上，进行最后的陈述。</p>
+<p>除了奇葩老师，这课留的作业也是害人害己（机）。跑作业对电脑的损害，已经到了令人发指的地步。队友的 macbook, 自从上了这门课，就毛病不断，不是风扇怒吼就是突然重启。我的 Debian 虚拟机自然招架不了这么大的资源需求，每秒 40MB 的虚拟内存 I/O 对 SSD 的损伤让我痛心不已，这样下去不出半年硬盘就会整体报废。为了挽救随我征战南北的机器，我决定部署 AWS EC2 服务器专门用来跑作业，可即便这样还是无法从容应对。有一次自编码机的作业，尽管我开了 8 GB 的内存，海量的数据也在几秒钟之内把资源吞噬干净。平生第一次见到 <code>ResourceExhaustedError</code> 这种异常，真是长见识了。</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2016-05-06-wander-in-gt-ii/aws.jpg">
+</div>
+
+<p>大部分的作业都可以用一句话来概括：实现 XX 论文中描述的算法。这种作业的可怕之处在于真的没有办法 debug. 一个程序可以运行，结果却和论文中数据不一致，可能是由多种原因造成的。有可能是程序写错了，有可能是对论文的理解不对，还有可能是数据处理的问题。等到排除了所有可能性之后，剩下的最后一种可能性，无论多么不可思议…………也不是造成 bug 的原因啊！考试周的最后一个作业，整整两天，我都没能找出错误原因，总归是死不瞑目了。幸好烨神及时送出了一波助攻，才没有死得很难看。</p>
+<p>强烈建议这门课要么送服务器时长，要么送购机优惠券，否则真是得不偿失。送服务器时长想必更靠谱些，毕竟班上有这么多人都去 Amazon 了，贵司照顾下众员工的心情也是理所应该的事。</p>
+<br />
+
+<h2 id="我对缩进特特特敏感"><a href="#我对缩进特特特敏感" class="headerlink" title="我对缩进特特特敏感"></a>我对缩进特特特敏感</h2><p>最后聊一聊可能是我校绝无仅有的平均绩点 4.0 的神课，CSE6242 Data and Visual Analysis. 这门课提出一个全新的观点：上课不是学习的主要手段，写作业才是。四次作业覆盖了四个不同领域：数据获取与清洗、数据可视化、大数据分析、机器学习，可谓一网打尽。因为写作业涉及的技术栈过于庞大，确实有从头跪到尾的同学，然而他们也不曾担心什么，因为满绩早在选课之时就已注定了。我对其中的三次作业都感觉良好，唯独写 JavaScript 那次真是痛不欲生。要不是因为它抓住了 web 发展的风口，这种丧心病狂的语言早就应该与 php 一道被淘汰出局了。</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2016-05-06-wander-in-gt-ii/php.jpg">
+</div>
+
+<p>这课除了要花几十个小时写作业之外，还要做一个期末大项目。在啤酒推荐等多个想法被毙了之后，我们给自己挖了个大坑：做一个约饭应用。因为没人写前端，而我又想感受下前端开发的过程，于是担当了美工+交互设计的职责。</p>
+<p>从我的角度来看，这个项目的成功很大程度上得益于 <a href="http://flask.pocoo.org/" title="" target="">flask</a> 这个开发框架选得好。Flask 足够的轻量，便于上手，但在功能上又毫不逊色。Jinja 模板引擎也很成功，可以专注地构建 html, 不会像 JSP 那样打断思路。通过第三方库，Flask 对 PostgreSQL 的操控也很容易。再配合 bootstrap css 这种用来偷懒的神器，前端开发过程并没有遇到太多困难。真正的问题，都出在了前后端结合部。</p>
+<p>需求变动是件很可怕的事。应用要改接口，界面要改布局，数据库要改表格。布局与表格是相互分立的两块儿，这中间相连的接口，倒是和每个人都脱不了干系。合并接口代码这一步，差点儿就被几个空白字符给毁了。程序是拿 Python 写的，Python 是用两个不同的编辑器敲的：我的 vim 被配置成用4个空格替换一个 tab, 而Z罗的 gedit 却保留着缺省设置：用 tab 字符，而且代表8个空格。这样混乱的排版对其他语言都不是什么事儿，到了 Python 这里就是恼人的缩进错误。像我这种出道较早且长期编写 Python 的用户，对缩进那是相当的敏感。拿到一段风格迥异的代码，除了想要改掉，就是想要删掉。按理说像 Python 这种吊炸天的语言早就应该占领宇宙了，但因为缩进这件小事引发了很多人的反感，于是才有了一小撮坚定的反抗者，维护着 Ruby, Lua 这些脚本语言。官方推荐的编码风格 <a href="https://www.python.org/dev/peps/pep-0008/" title="" target="">PEP8</a> 值得一读，当然遵循这套风格的后果是，按反抗者的话说，你已经没有什么自由可言了。</p>
+<p>我们这个小组的成功，是大家一起努力的结果。每次开会的时候都会很愉快，笑着笑着就把活儿都干了。我应该不会忘记大黄设计的那套“蓝色经典”展板，放在距离 pizza 只有一步之遥的地方，真是赚足了眼球。设计师还是请有强迫症的人担当才好，肯定会比我这个临时工前端做的页面漂亮百倍。最后，等我们提交了代码和报告之后，忽然看到一条新闻，说斯坦福的两个毕业生做了一个叫 DownToLunch 的约饭软件，取得了巨大的成功。我内心的感受是：错过了好几个亿啊！</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2016-05-06-wander-in-gt-ii/nuclear.jpg">
+</div>
+
+<br />
+
+<h2 id="瞎折腾，就是全栈的全部"><a href="#瞎折腾，就是全栈的全部" class="headerlink" title="瞎折腾，就是全栈的全部"></a>瞎折腾，就是全栈的全部</h2><p>最后的一个月是在绵绵不绝的 due 中度过的。学校的 GitHub 打卡机忠实地记录了这一段时光。与上个学期稀稀拉拉的工作不同，这个学期的节奏那是根本停不下来！最后一段 24 combo 的高潮也是创下了我的最长连击记录。在这期间，我也有幸见证了凌晨两点半的图书馆和深夜十二点的 Klaus. 谢谢和我一同忙碌的同学们！</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2016-05-06-wander-in-gt-ii/github.jpg">
+</div>
+
+<p>回望这个学期，我尝试了许多新的技术。写了 MPI 并行计算，用 JSP 和 Python 分别构建了 Web 应用，尝试了 socket programming 和 multithreading, 跑过 Hadoop 和 Spark, 甚至还写了几行 scala. 然而上述这些都没有什么卵用，实际工作场景需要什么，我还全然不知。欲知实习如何，请听下回分解。</p>
+<br />
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/memo/" rel="tag"># memo</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/02/15/invalid-file-names-in-windows/" rel="prev" title="Invalid File Names in Windows">
+      <i class="fa fa-chevron-left"></i> Invalid File Names in Windows
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/05/27/inside-matrix67s-ideagen/" rel="next" title="Inside Matrix67's Idea Generator">
+      Inside Matrix67's Idea Generator <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%96%E8%BA%AB%E6%8C%87%E5%8D%97"><span class="nav-number">1.</span> <span class="nav-text">卖身指南</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%96%84%E5%AE%88%E8%80%85%E4%B8%8D%E5%BF%85%E5%96%84%E6%94%BB"><span class="nav-number">2.</span> <span class="nav-text">善守者不必善攻</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%B1%E8%90%BD%E7%9A%84%E6%95%99%E4%B8%BB"><span class="nav-number">3.</span> <span class="nav-text">失落的教主</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E5%AF%B9%E7%BC%A9%E8%BF%9B%E7%89%B9%E7%89%B9%E7%89%B9%E6%95%8F%E6%84%9F"><span class="nav-number">4.</span> <span class="nav-text">我对缩进特特特敏感</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9E%8E%E6%8A%98%E8%85%BE%EF%BC%8C%E5%B0%B1%E6%98%AF%E5%85%A8%E6%A0%88%E7%9A%84%E5%85%A8%E9%83%A8"><span class="nav-number">5.</span> <span class="nav-text">瞎折腾，就是全栈的全部</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Ming Wen"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Ming Wen</p>
+  <div class="site-description" itemprop="description">Knowledge for action</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">94</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/bitmingw" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;bitmingw" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/bitmingw" title="LinkedIn → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;bitmingw" rel="noopener" target="_blank"><i class="fa fa-fw fa-linkedin"></i>LinkedIn</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/omegaenming/" title="Douban → https:&#x2F;&#x2F;www.douban.com&#x2F;people&#x2F;omegaenming&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Douban</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://feedburner.google.com/fb/a/mailverify?uri=bitmingw/hexo-blog" title="Subscriber → https:&#x2F;&#x2F;feedburner.google.com&#x2F;fb&#x2F;a&#x2F;mailverify?uri&#x3D;bitmingw&#x2F;hexo-blog" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Subscriber</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2014 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ming Wen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://bitmingwblog.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://bitmingw.com/2016/05/06/wander-in-gt-ii/";
+    this.page.identifier = "2016/05/06/wander-in-gt-ii/";
+    this.page.title = "在 GT（中）";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://bitmingwblog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

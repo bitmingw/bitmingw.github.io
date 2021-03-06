@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bitmingw.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="I used to run a VM in my mac with VMware Fusion. As my mac is getting older, the VM is becoming slower and slower. One day I got an ESXi host which had sufficient resource to run that VM, but migratio">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Migrate VMware Workstation &#x2F; Fusion VM to ESXi">
+<meta property="og:url" content="https://bitmingw.com/2020/02/12/migrate-local-vm-to-esxi/index.html">
+<meta property="og:site_name" content="Ming&#39;s Blog">
+<meta property="og:description" content="I used to run a VM in my mac with VMware Fusion. As my mac is getting older, the VM is becoming slower and slower. One day I got an ESXi host which had sufficient resource to run that VM, but migratio">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2020-02-12-migrate-local-vm-to-esxi/source-vm.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2020-02-12-migrate-local-vm-to-esxi/export-ovf.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2020-02-12-migrate-local-vm-to-esxi/create-new-vm.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2020-02-12-migrate-local-vm-to-esxi/create-new-vm-01.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2020-02-12-migrate-local-vm-to-esxi/create-new-vm-07a.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2020-02-12-migrate-local-vm-to-esxi/create-new-vm-07b.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2020-02-12-migrate-local-vm-to-esxi/create-new-vm-07c.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2020-02-12-migrate-local-vm-to-esxi/create-new-vm-07d.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2020-02-12-migrate-local-vm-to-esxi/access-new-vm.png">
+<meta property="article:published_time" content="2020-02-12T08:00:00.000Z">
+<meta property="article:modified_time" content="2020-02-13T06:15:41.813Z">
+<meta property="article:author" content="Ming Wen">
+<meta property="article:tag" content="ESXi">
+<meta property="article:tag" content="VMware">
+<meta property="article:tag" content="vSphere">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bitmingw.github.io/assets/2020-02-12-migrate-local-vm-to-esxi/source-vm.png">
+
+<link rel="canonical" href="https://bitmingw.com/2020/02/12/migrate-local-vm-to-esxi/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Migrate VMware Workstation / Fusion VM to ESXi | Ming's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-57646918-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-57646918-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Ming's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/bitmingw" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://bitmingw.com/2020/02/12/migrate-local-vm-to-esxi/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Ming Wen">
+      <meta itemprop="description" content="Knowledge for action">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ming's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Migrate VMware Workstation / Fusion VM to ESXi
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-02-12 00:00:00 / Modified: 22:15:41" itemprop="dateCreated datePublished" datetime="2020-02-12T00:00:00-08:00">2020-02-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tutorial/" itemprop="url" rel="index"><span itemprop="name">tutorial</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2020/02/12/migrate-local-vm-to-esxi/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/02/12/migrate-local-vm-to-esxi/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>I used to run a VM in my mac with VMware Fusion. As my mac is getting older, the VM is becoming slower and slower. One day I got an ESXi host which had sufficient resource to run that VM, but migration from VMware Fusion to ESXi was not a straight forward task. If you are facing similar problem with VMware Workstation or Fusion, the following steps will help you.</p>
+<span id="more"></span>
+
+<br />
+
+<h2 id="Step-1-Export-VMDK"><a href="#Step-1-Export-VMDK" class="headerlink" title="Step 1: Export VMDK"></a>Step 1: Export VMDK</h2><p>Assuming you want to migrate this VM in your local environment:</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2020-02-12-migrate-local-vm-to-esxi/source-vm.png">
+</div>
+
+<p>First you need to export the VM, which contains the VMDK file you will need to transfer to the ESXi host.</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2020-02-12-migrate-local-vm-to-esxi/export-ovf.png">
+</div>
+
+<p>A VM can be export as a single OVA file, or two separate files (OVF file + VMDK file). The recommendation is choosing separate files, since only VMDK file is needed in later steps.</p>
+<br />
+
+<h2 id="Step-2-Upload-and-Convert-VMDK"><a href="#Step-2-Upload-and-Convert-VMDK" class="headerlink" title="Step 2: Upload and Convert VMDK"></a>Step 2: Upload and Convert VMDK</h2><p>When the export finishes, you can use <code>scp</code> to upload the VMDK file to ESXi datastore.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:&#x2F;vmfs&#x2F;volumes&#x2F;datastore] ls</span><br><span class="line">...</span><br><span class="line">Windows-10-64-Enterprise-disk1.vmdk</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>The VMDK format between ESXi and VMware Workstation / Fusion is different, so the uploaded file can&#39;t be consumed by ESXi directly. There is a command <code>vmkfstools</code> to convert Workstation and Fusion VMDK into ESXi&#39;s format. Let&#39;s rename the uploaded VMDK and do the conversion.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root...] mv Windows-10-64-Enterprise-disk1.vmdk Windows-10-64-Enterprise-disk1.vmdk.fusion</span><br><span class="line">[root...] vmkfstools -i Windows-10-64-Enterprise-disk1.vmdk.fusion Windows-10-64-Enterprise-disk1.vmdk</span><br><span class="line">Destination disk format: VMFS zeroedthick</span><br><span class="line">Cloning disk &#39;Windows-10-64-Enterprise-disk1.vmdk.fusion&#39;...</span><br><span class="line">Clone: 100% done.</span><br></pre></td></tr></table></figure>
+
+<p>Now you should have the following files in the datastore:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root...] ls</span><br><span class="line">...</span><br><span class="line">Windows-10-64-Enterprise-disk1-flat.vmdk</span><br><span class="line">Windows-10-64-Enterprise-disk1.vmdk</span><br><span class="line">Windows-10-64-Enterprise-disk1.vmdk.fusion</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>&quot;Windows-10-64-Enterprise-disk1.vmdk.fusion&quot; is the original VMDK you uploaded. &quot;Windows-10-64-Enterprise-disk1.vmdk&quot; and &quot;Windows-10-64-Enterprise-disk1-flat.vmdk&quot; are the new files generated by <code>vmkfstools</code> command.</p>
+<br />
+
+<h2 id="Step-3-Create-New-VM-with-VMDK"><a href="#Step-3-Create-New-VM-with-VMDK" class="headerlink" title="Step 3: Create New VM with VMDK"></a>Step 3: Create New VM with VMDK</h2><p>Now you can create a new VM with the generated VMDK in the datastore. The UI may be different in your environment.</p>
+<p>Click &quot;New Virtual Machine...&quot;.</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2020-02-12-migrate-local-vm-to-esxi/create-new-vm.png">
+</div>
+
+<p>In creation type, select &quot;Create a new virtual machine&quot;.</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2020-02-12-migrate-local-vm-to-esxi/create-new-vm-01.png">
+</div>
+
+<p>In customize hardware, click the cross at the right of &quot;New Hard disk *&quot; to remove the default disk assigned to this virtual machine.</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2020-02-12-migrate-local-vm-to-esxi/create-new-vm-07a.png">
+</div>
+
+<p>Then click &quot;ADD NEW DEVICE&quot; -&gt; &quot;Existing Hard Disk&quot;, and select the generated VMDK file.</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2020-02-12-migrate-local-vm-to-esxi/create-new-vm-07b.png">
+</div>
+
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2020-02-12-migrate-local-vm-to-esxi/create-new-vm-07c.png">
+</div>
+
+<p>After that, you should be able to see the generated VMDK is listed as &quot;Disk File&quot;.</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2020-02-12-migrate-local-vm-to-esxi/create-new-vm-07d.png">
+</div>
+
+<p>When everything is correct, move forward to create and start VM. Now you should be able to access the VM from Workstation or Fusion even though it is running in ESXi.</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2020-02-12-migrate-local-vm-to-esxi/access-new-vm.png">
+</div>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ESXi/" rel="tag"># ESXi</a>
+              <a href="/tags/VMware/" rel="tag"># VMware</a>
+              <a href="/tags/vSphere/" rel="tag"># vSphere</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/12/29/2019-retrospect/" rel="prev" title="2019 年终总结">
+      <i class="fa fa-chevron-left"></i> 2019 年终总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/26/understand-financial-statements/" rel="next" title="看懂上市公司财报">
+      看懂上市公司财报 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Step-1-Export-VMDK"><span class="nav-number">1.</span> <span class="nav-text">Step 1: Export VMDK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Step-2-Upload-and-Convert-VMDK"><span class="nav-number">2.</span> <span class="nav-text">Step 2: Upload and Convert VMDK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Step-3-Create-New-VM-with-VMDK"><span class="nav-number">3.</span> <span class="nav-text">Step 3: Create New VM with VMDK</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Ming Wen"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Ming Wen</p>
+  <div class="site-description" itemprop="description">Knowledge for action</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">94</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/bitmingw" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;bitmingw" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/bitmingw" title="LinkedIn → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;bitmingw" rel="noopener" target="_blank"><i class="fa fa-fw fa-linkedin"></i>LinkedIn</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/omegaenming/" title="Douban → https:&#x2F;&#x2F;www.douban.com&#x2F;people&#x2F;omegaenming&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Douban</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://feedburner.google.com/fb/a/mailverify?uri=bitmingw/hexo-blog" title="Subscriber → https:&#x2F;&#x2F;feedburner.google.com&#x2F;fb&#x2F;a&#x2F;mailverify?uri&#x3D;bitmingw&#x2F;hexo-blog" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Subscriber</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2014 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ming Wen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://bitmingwblog.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://bitmingw.com/2020/02/12/migrate-local-vm-to-esxi/";
+    this.page.identifier = "2020/02/12/migrate-local-vm-to-esxi/";
+    this.page.title = "Migrate VMware Workstation / Fusion VM to ESXi";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://bitmingwblog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

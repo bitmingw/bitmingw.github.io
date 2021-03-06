@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bitmingw.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1936 年，阿兰·图灵发表了图灵机理论，证明了存在一种计算机可以执行任何能被算法表达出来的计算过程。1945 年，第一台图灵完备的电子计算机 ENIAC 投入使用，它和后续的电子计算机改变了人类的历史进程。关于量子计算的研究始于 1980 年代。尽管时至今日，尚未出现能进行复杂计算的量子计算机，但量子计算的相关理论已经成熟。 一般来说，完成一次计算需要做三件事： 提供输入 -&gt; 执行计算过">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简明易懂的量子计算">
+<meta property="og:url" content="https://bitmingw.com/2019/06/09/easy-to-understand-quantum-computing/index.html">
+<meta property="og:site_name" content="Ming&#39;s Blog">
+<meta property="og:description" content="1936 年，阿兰·图灵发表了图灵机理论，证明了存在一种计算机可以执行任何能被算法表达出来的计算过程。1945 年，第一台图灵完备的电子计算机 ENIAC 投入使用，它和后续的电子计算机改变了人类的历史进程。关于量子计算的研究始于 1980 年代。尽管时至今日，尚未出现能进行复杂计算的量子计算机，但量子计算的相关理论已经成熟。 一般来说，完成一次计算需要做三件事： 提供输入 -&gt; 执行计算过">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-06-09T07:00:00.000Z">
+<meta property="article:modified_time" content="2019-06-09T17:04:45.114Z">
+<meta property="article:author" content="Ming Wen">
+<meta property="article:tag" content="quantum computing">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://bitmingw.com/2019/06/09/easy-to-understand-quantum-computing/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>简明易懂的量子计算 | Ming's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-57646918-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-57646918-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Ming's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/bitmingw" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://bitmingw.com/2019/06/09/easy-to-understand-quantum-computing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Ming Wen">
+      <meta itemprop="description" content="Knowledge for action">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ming's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          简明易懂的量子计算
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2019-06-09 00:00:00 / Modified: 10:04:45" itemprop="dateCreated datePublished" datetime="2019-06-09T00:00:00-07:00">2019-06-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tutorial/" itemprop="url" rel="index"><span itemprop="name">tutorial</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/06/09/easy-to-understand-quantum-computing/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/06/09/easy-to-understand-quantum-computing/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>1936 年，阿兰·图灵发表了图灵机理论，证明了存在一种计算机可以执行任何能被算法表达出来的计算过程。1945 年，第一台图灵完备的电子计算机 ENIAC 投入使用，它和后续的电子计算机改变了人类的历史进程。关于量子计算的研究始于 1980 年代。尽管时至今日，尚未出现能进行复杂计算的量子计算机，但量子计算的相关理论已经成熟。</p>
+<p>一般来说，完成一次计算需要做三件事：</p>
+<p><strong>提供输入 -&gt; 执行计算过程 -&gt; 提取输出</strong></p>
+<p>对于电子计算机而言，输入和输出都可以表达为一串比特。计算过程，就是处理单元在程序的控制下，通过 AND, OR, NOT 等逻辑门电路修改这些比特的过程。</p>
+<p>而量子计算机，输入的是量子比特（qubit）。计算过程是量子门（quantum logic gates）修改量子比特的状态（quantum state）。输出的是量子比特观测的结果。</p>
+<p>因此，理解量子计算，需要搞清楚量子比特、量子门和量子观测。考虑到量子计算的物理实现有多种方法，且许多细节均为机密，本文只会阐释量子计算的理论基础。</p>
+<span id="more"></span>
+
+<br />
+
+<h2 id="量子比特"><a href="#量子比特" class="headerlink" title="量子比特"></a>量子比特</h2><p>传统的比特有且只有 0 和 1 两个状态。如果存在一个比特，那么它在某时刻的状态必须是 0 和 1 之间的一个。量子比特与传统的比特不同，它的状态在理论上用一个长度为 2 的列向量表示。首先我们定义如下两个量子比特 \(| 0 \rangle\) 和 \(| 1 \rangle\).</p>
+<p>\[<br>| 0 \rangle = \left[<br>    \begin{array}{c}<br>    1 \\<br>    0 \end{array}<br>    \right]<br>\]</p>
+<p>\[<br>| 1 \rangle = \left[<br>    \begin{array}{c}<br>    0 \\<br>    1 \end{array}<br>    \right]<br>\]</p>
+<p>量子比特 \(| 0 \rangle\) 和 \(| 1 \rangle\) 是量子比特的计算基态（computational basis state）。或者说，它们是量子态空间的一组基。</p>
+<p>任何一个量子比特 \(| e \rangle\) 都可以表达为 \(\alpha| 0 \rangle + \beta| 1 \rangle\) 的形式，其中 \(\alpha\) 和 \(\beta\) 是两个复数，且它们的模的平方和等于 1，也就是</p>
+<p>\[<br>| \alpha |^2 + | \beta |^2 = 1<br>\]</p>
+<p>上述的限制又称为<strong>归一化条件</strong>。</p>
+<p>比如说，\(0.6 | 0 \rangle + 0.8 | 1 \rangle\) 是一个量子比特，\(\frac{1-i}{2} | 0 \rangle + \frac{1+i}{2} | 1 \rangle\) 也是一个量子比特，但 \((1-i) | 0 \rangle + (1+i) | 1 \rangle\) 就不是一个量子比特，因为它不满足归一化条件。按照数乘矩阵的规则，上面两个量子比特又可以写作</p>
+<p>\[<br>\left[<br>\begin{array}{c}<br>0.6 \\<br>0.8 \end{array}<br>\right]<br>\]</p>
+<p>和</p>
+<p>\[<br>\left[<br>\begin{array}{c}<br>\frac{1-i}{2} \\<br>\frac{1+i}{2} \end{array}<br>\right]<br>\]</p>
+<p>直观上讲，量子比特可以视为传统比特的一种叠加态（superposition）。比如说，\(0.6 | 0 \rangle + 0.8 | 1 \rangle\) 可以视为 0.36 (\(0.6^2\)) 个比特 0 和 0.64 (\(0.8^2\)) 个比特 1 的一种叠加状态。</p>
+<br />
+
+<h2 id="量子门"><a href="#量子门" class="headerlink" title="量子门"></a>量子门</h2><p>正如数字电路中的逻辑门可以修改比特的状态一样，量子门可以修改量子比特的状态。量子门既可以只有一个输入和一个输出（转变单个量子的状态），也可以具有多个输入和多个输出（转变多个量子的状态）。输入和输出的数目应当相等，也就是说不可以吞噬量子。下面介绍两个单输入输出的量子门和一个多输入输出的量子门。</p>
+<h3 id="NOT-门"><a href="#NOT-门" class="headerlink" title="NOT 门"></a>NOT 门</h3><p>NOT 门作用于单个量子比特，它可以交换两个基向量的系数：</p>
+<p>\[<br>NOT(\alpha| 0 \rangle + \beta| 1 \rangle) = \alpha| 1 \rangle + \beta| 0 \rangle<br>\]</p>
+<p>量子的 NOT 门是数字电路中 NOT 门的一个扩展。举一个直观的例子，假如原先的量子态是 0.36 个比特 0 和 0.64 个比特 1 的叠加态，那么经过 NOT 门之后，就变成了 0.64 个比特 0 和 0.36 个比特 1 的叠加态。</p>
+<p>单输入输出的量子门可以使用一个 \(2 \times 2\) 的矩阵来表示。一个量子经过量子门之后的状态，由该量子状态向量<strong>左乘</strong>量子门矩阵的值决定。NOT 门对应的量子门矩阵为</p>
+<p>\[<br>X = \left[<br>    \begin{array}{cc}<br>    0 &amp; 1 \\<br>    1 &amp; 0 \end{array}<br>    \right]<br>\]</p>
+<p>因此，某个量子比特经过 NOT 门的结果为</p>
+<p>\[<br>X \left[<br>\begin{array}{c}<br>\alpha \\<br>\beta \end{array}<br>\right]<br>=<br>\left[<br>\begin{array}{cc}<br>0 &amp; 1 \\<br>1 &amp; 0 \end{array}<br>\right]<br>\left[<br>\begin{array}{c}<br>\alpha \\<br>\beta \end{array}<br>\right]<br>=<br>\left[<br>\begin{array}{c}<br>\beta \\<br>\alpha \end{array}<br>\right]<br>\]</p>
+<h3 id="Hadamard-门"><a href="#Hadamard-门" class="headerlink" title="Hadamard 门"></a>Hadamard 门</h3><p>Hadamard 门同样作用于单个量子比特，它可以依照系数分解现有的量子态：</p>
+<p>\[<br>H(\alpha| 0 \rangle + \beta| 1 \rangle) = \frac{\alpha + \beta}{\sqrt{2}} | 0 \rangle + \frac{\alpha - \beta}{\sqrt{2}} | 1 \rangle<br>\]</p>
+<p>用矩阵来表示就是</p>
+<p>\[<br>H = \frac{\sqrt{2}}{2} \left[<br>\begin{array}{cc}<br>1 &amp;  1 \\<br>1 &amp; -1 \end{array}<br>\right]<br>\]</p>
+<p>虽然 Hadamard 门和数字电路中的 AND 和 OR 门并无直接的关联，但它在不少量子计算算法中有重要的应用。有兴趣的读者可以自行证明，连续使用两次 Hadamard 门之后，量子会回到原先的状态——这个行为和 NOT 门是一致的。</p>
+<p>单输入输出的量子门可以有无穷多种，只要满足量子比特状态向量左乘量子门矩阵的结果依然满足量子比特的归一化条件即可。在这里我们不加证明地给出如下定理：</p>
+<blockquote>
+<p>某个 \(2 \times 2\) 的复矩阵能作为量子门的一个表示，当且仅当其共轭矩阵等于其逆矩阵。</p>
+</blockquote>
+<h3 id="受控-NOT-门"><a href="#受控-NOT-门" class="headerlink" title="受控 NOT 门"></a>受控 NOT 门</h3><p>在计算机程序中，充满着条件判断语句：如果怎样，那么做什么，否则做别的什么。在量子计算中，我们也期望一个量子比特的状态可以因为另一个量子比特而改变，这就需要多输入输出的量子门。下面要介绍的是受控 NOT 门（CNOT 门）。它具有两个输入和两个输出。如果把输入和输出当作一个整体来看，这个状态可以用 \(\alpha| 00 \rangle + \beta| 01 \rangle + \gamma| 10 \rangle + \theta| 11 \rangle\) 来表示。其中 \(| 00 \rangle\), \(| 01 \rangle\), \(| 10 \rangle\), \(| 11 \rangle\) 是长度为 4 的列向量，它们由 \(| 0 \rangle\) 和 \(| 1 \rangle\) 拼接而成。</p>
+<p>这个整体也需要满足归一化条件，即</p>
+<p>\[<br>| \alpha |^2 + | \beta |^2 + | \gamma |^2 + | \theta |^2 = 1<br>\]</p>
+<p>CNOT 门中，第一个输入是比特 0 的部分，会维持第二个输入的状态；而第一个输入是比特 1 的部分，会以 NOT 门的方式作用于第二个输入的状态。第一个输入的量子比特会原样输出，而第二个输入的量子比特的状态由上述的叠加态决定。用数学公式来表达就是</p>
+<p>\[<br>CNOT(\alpha| 00 \rangle + \beta| 01 \rangle + \gamma| 10 \rangle + \theta| 11 \rangle) = \alpha| 00 \rangle + \beta| 01 \rangle + \gamma| 11 \rangle + \theta| 10 \rangle<br>\]</p>
+<br />
+
+<h2 id="量子观测"><a href="#量子观测" class="headerlink" title="量子观测"></a>量子观测</h2><p>从上面关于量子门的介绍可以看到，一个量子比特处于两个量子态 \(| 0 \rangle\) 和 \(| 1 \rangle\) 的叠加态；两个量子比特组合成的整体，处于四个量子态 \(| 00 \rangle\), \(| 01 \rangle\), \(| 10 \rangle\) 和 \(| 11 \rangle\) 的叠加态。以此类推，\(n\) 个量子比特处于 \(2^n\) 个量子态的叠加态，这相对于 \(n\) 个传统的比特却只有一个固定的状态相比，是巨大的优势。然而物理定律也有它的限制——确切地知道一个量子比特的状态的方法是进行一次观测，但观测会使得叠加态坍缩，变成一个确定的状态。一个量子比特在观测之后得到的信息是传统的比特，它的值只能是 0 和 1 之间的一个。一个叠加态会塌缩成 0 或者 1，是由叠加态中的系数 \(\alpha\) 和 \(\beta\) 决定的。这个叠加态塌缩成 0 或 1 的概率分别为 \(| \alpha |^2\) 和 \(| \beta |^2\)。类似的，一个双量子比特的系统，其观测结果为 00, 01, 10, 11 的概率分别是 \(| \alpha |^2\), \(| \beta |^2\), \(| \gamma |^2\) 和 \(| \theta |^2\).</p>
+<p>这样的物理定律导致量子计算的结果是不确定的，它有一定的概率输出一个错误的结果。在实际应用中需要额外的手段来验证输出的正确性。量子计算使用的算法，如果能在观测的上一步尽可能地减少量子比特的叠加态，就能以大概率得到正确的结果。</p>
+<br />
+
+<h2 id="组合起来"><a href="#组合起来" class="headerlink" title="组合起来"></a>组合起来</h2><p>我们把上面提及的几个部分组合起来，所谓量子计算，无非就是：</p>
+<ol>
+<li>从一组计算基态开始（每个量子比特被初始化成 \(| 0 \rangle\) 或 \(| 1 \rangle\) 作为计算的输入）；</li>
+<li>根据预定的算法，通过一系列量子门；</li>
+<li>经过量子观测得到一串比特作为结果。</li>
+</ol>
+<p>值得说明的是，在现阶段，实现每一个量子门，都需要人工操纵物理实验设备，写量子计算的程序还远没有敲字符那么简单。</p>
+<p>物理学家尚未证明量子计算的界限在哪里，不知道它是否可以用来模拟<strong>任何</strong>物理过程。从 1980 年代到现在，量子计算应用于实践似乎仍遥遥无期，但它的某些应用，如解算蛋白质结构，以及破解不对称加密密钥，已经引发了不少关注。我们无法知道它的大规模普及是否会像电子计算机一样再次改变人类社会。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/quantum-computing/" rel="tag"># quantum computing</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/03/31/camera-crop-factor/" rel="prev" title="相机的裁切系数">
+      <i class="fa fa-chevron-left"></i> 相机的裁切系数
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/08/28/ubuntu-update-alternatives/" rel="next" title="Changing the Default Program with update alternatives">
+      Changing the Default Program with update alternatives <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8F%E5%AD%90%E6%AF%94%E7%89%B9"><span class="nav-number">1.</span> <span class="nav-text">量子比特</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8F%E5%AD%90%E9%97%A8"><span class="nav-number">2.</span> <span class="nav-text">量子门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NOT-%E9%97%A8"><span class="nav-number">2.1.</span> <span class="nav-text">NOT 门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hadamard-%E9%97%A8"><span class="nav-number">2.2.</span> <span class="nav-text">Hadamard 门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%97%E6%8E%A7-NOT-%E9%97%A8"><span class="nav-number">2.3.</span> <span class="nav-text">受控 NOT 门</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8F%E5%AD%90%E8%A7%82%E6%B5%8B"><span class="nav-number">3.</span> <span class="nav-text">量子观测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%84%E5%90%88%E8%B5%B7%E6%9D%A5"><span class="nav-number">4.</span> <span class="nav-text">组合起来</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Ming Wen"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Ming Wen</p>
+  <div class="site-description" itemprop="description">Knowledge for action</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">94</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/bitmingw" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;bitmingw" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/bitmingw" title="LinkedIn → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;bitmingw" rel="noopener" target="_blank"><i class="fa fa-fw fa-linkedin"></i>LinkedIn</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/omegaenming/" title="Douban → https:&#x2F;&#x2F;www.douban.com&#x2F;people&#x2F;omegaenming&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Douban</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://feedburner.google.com/fb/a/mailverify?uri=bitmingw/hexo-blog" title="Subscriber → https:&#x2F;&#x2F;feedburner.google.com&#x2F;fb&#x2F;a&#x2F;mailverify?uri&#x3D;bitmingw&#x2F;hexo-blog" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Subscriber</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2014 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ming Wen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://bitmingwblog.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://bitmingw.com/2019/06/09/easy-to-understand-quantum-computing/";
+    this.page.identifier = "2019/06/09/easy-to-understand-quantum-computing/";
+    this.page.title = "简明易懂的量子计算";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://bitmingwblog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

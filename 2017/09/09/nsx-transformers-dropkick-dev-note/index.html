@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bitmingw.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="故事背景NSX 是 VMware 的支柱产品之一，旨在为企业提供一体化网络虚拟化方案。NSX vSphere 已在市场站稳了脚跟，公司正逐步把开发力量转移至它的后继者：NSX Transformers。去年发布的 Transformers 1.1 版本 [Crosshairs] 正在某家合作伙伴服役，今年推出的 2.0 版本 [Dropkick] 预计会在十余家企业推广试用。 NSX Transf">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NSX Transformers [Dropkick] 开发后记">
+<meta property="og:url" content="https://bitmingw.com/2017/09/09/nsx-transformers-dropkick-dev-note/index.html">
+<meta property="og:site_name" content="Ming&#39;s Blog">
+<meta property="og:description" content="故事背景NSX 是 VMware 的支柱产品之一，旨在为企业提供一体化网络虚拟化方案。NSX vSphere 已在市场站稳了脚跟，公司正逐步把开发力量转移至它的后继者：NSX Transformers。去年发布的 Transformers 1.1 版本 [Crosshairs] 正在某家合作伙伴服役，今年推出的 2.0 版本 [Dropkick] 预计会在十余家企业推广试用。 NSX Transf">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-09-09T07:00:00.000Z">
+<meta property="article:modified_time" content="2017-09-23T02:48:05.612Z">
+<meta property="article:author" content="Ming Wen">
+<meta property="article:tag" content="memo">
+<meta property="article:tag" content="network">
+<meta property="article:tag" content="debug">
+<meta property="article:tag" content="VMware">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://bitmingw.com/2017/09/09/nsx-transformers-dropkick-dev-note/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>NSX Transformers [Dropkick] 开发后记 | Ming's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-57646918-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-57646918-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Ming's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/bitmingw" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://bitmingw.com/2017/09/09/nsx-transformers-dropkick-dev-note/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Ming Wen">
+      <meta itemprop="description" content="Knowledge for action">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ming's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          NSX Transformers [Dropkick] 开发后记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-09-09 00:00:00" itemprop="dateCreated datePublished" datetime="2017-09-09T00:00:00-07:00">2017-09-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2017-09-22 19:48:05" itemprop="dateModified" datetime="2017-09-22T19:48:05-07:00">2017-09-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/work/" itemprop="url" rel="index"><span itemprop="name">work</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/09/09/nsx-transformers-dropkick-dev-note/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/09/09/nsx-transformers-dropkick-dev-note/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="故事背景"><a href="#故事背景" class="headerlink" title="故事背景"></a>故事背景</h2><p>NSX 是 VMware 的支柱产品之一，旨在为企业提供一体化网络虚拟化方案。NSX vSphere 已在市场站稳了脚跟，公司正逐步把开发力量转移至它的后继者：NSX Transformers。去年发布的 Transformers 1.1 版本 [Crosshairs] 正在某家合作伙伴服役，今年推出的 2.0 版本 [Dropkick] 预计会在十余家企业推广试用。</p>
+<p>NSX Transformers 曾经使用了 Pivotal 出品的 NoSQL 数据存储套件 GemFire。由于商业调整，GemFire 的核心组件被捐给了 Apache 基金会，产品开发陷入停顿。为了避免使用停止维护的产品，我司把目光投向了 VMware Research 编写的开源数据库 CorfuDB，并打算在 Dropkick 完成实装。这半年多的故事，都是围绕更换数据库展开的。</p>
+<span id="more"></span>
+
+<h2 id="产品开发"><a href="#产品开发" class="headerlink" title="产品开发"></a>产品开发</h2><p>年初的 V 家，显然还没有从硅谷一线公司那里学到两个礼拜 bootcamp 的重要意义。入职当天上午 10 点，我被经理带走配置开发环境。第二天，就领到了第一项任务，让我修改闭源的 CorfuDB 的软件版本号，并把它加到 nsx manager debian package 的依赖列表中。虽然组里没有给我安排一个导师，不过这种任务稍稍 google 一下就知道该如何动手：改一下 <code>pom.xml</code> 工程文件和 <code>debian/control</code> 控制文件就能搞定了。这差不多是一个小时的工作量，但是捣鼓评审系统、找人评审代码，花掉了好几天的时间。好不容易在第二周提交进了仓库，又迅速变身成了 P0 test blocker (P0 表示最高优先级的 bug)，第一次出师就打了个全军覆没。我赶紧钻进代码和日志堆里看了一个上午，大概搞明白是因为没有把 CorfuDB 加入测试环境，才让整个流水线崩得体无完肤的。</p>
+<p>NSX Transformers 的编译时间大约为四小时，自动化测试大约需十二小时。有一条流水线（持续集成/CI）每隔两个小时编译并测试一个 Transformers 版本。由于代码提交的预测试也挂载在流水线上，因此当它由于某些故障无法工作时，工程师就会被迫休假。按我的估算，以工资计量，流水线每停工一小时的损失约是 4000 美元。更改 CorfuDB 版本号引发的流水线大罢工，在 10 个小时后得以纠正，因此这是一个价值四万美元的教训：在修改工程代码的时候，别忘了看一下测试环境是否也需要修改。</p>
+<p>后来的一段时期，我的开发工作主要是围绕 CorfuDB 的打包、安装和维护进行的。有几次提交，比如拆分工程结构、改写启动脚本、加入 systemd 支持等，通过 GitHub pull request 进了开源仓库，因此我也拿到了尊贵的 contributor 头衔。不过开发 CorfuDB 并非我的职责。作为一个 CorfuDB 的“用户”，我依据 NSX 的需要定制了部分功能，更多的提交也仅存在于闭源仓库中。可能是因为几乎只有我一个人单独向闭源仓库贡献代码，导致这两个仓库间的差别外人难以知晓，渐渐地，我很难找到合适的人做代码评审。再加上权限设置的弊病，在这里提交代码不要求他人的评审，事实上提供了暗箱操作的空间。当然，长此以往，自然会搞出事情。</p>
+<p>值得一提的事故有两件，而且它们都和 shell 脚本有关，足以见得 shell 是一个绝对危险的领域。第一回，经理让我实现一个根据机器内存大小自动设定 JVM 栈空间上限的功能。我的想法是拿 <code>awk</code> 解析 <code>/proc/meminfo</code> 的数据，搞清楚到底机器上到底有多少内存，再按百分比把合适的数值写到 JVM 启动参数里面。这其中，需要判断某个环境变量是否为空。shell 有两种方法可以解答这个问题：<code>[ -n $STRING ]</code> 当 <code>$STRING</code> 字符串长度不为 0 时返回 <code>true</code>，而 <code>[ -z $STRING ]</code> 只有当 <code>$STRING</code> 长度为 0 时才返回 <code>true</code>。听起来很简单吧！但实际的结果会出乎你的意料。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 当变量 $var 未定义或长度为 0 时</span></span><br><span class="line">[ -n <span class="variable">$var</span> ]      <span class="comment"># =&gt; true</span></span><br><span class="line">[ -n <span class="string">&quot;<span class="variable">$var</span>&quot;</span> ]    <span class="comment"># =&gt; false</span></span><br><span class="line">[ ! -z <span class="variable">$var</span> ]    <span class="comment"># =&gt; false</span></span><br><span class="line">[ ! -z <span class="string">&quot;<span class="variable">$var</span>&quot;</span> ]  <span class="comment"># =&gt; false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 当变量 $var 长度不为 0 时</span></span><br><span class="line">[ -n <span class="variable">$var</span> ]      <span class="comment"># =&gt; true</span></span><br><span class="line">[ -n <span class="string">&quot;<span class="variable">$var</span>&quot;</span> ]    <span class="comment"># =&gt; true</span></span><br><span class="line">[ ! -z <span class="variable">$var</span> ]    <span class="comment"># =&gt; true</span></span><br><span class="line">[ ! -z <span class="string">&quot;<span class="variable">$var</span>&quot;</span> ]  <span class="comment"># =&gt; true</span></span><br></pre></td></tr></table></figure>
+
+<p>为什么 <code>[ -n $var ]</code> 的行为与预期不同呢？它和 <code>[ -n &quot;$var&quot; ]</code> 又有怎样的区别？如果 <code>$var</code> 为空，那么在第一种写法中，<code>test</code> 程序会以为只传入了 <code>-n</code> 一个参数，它按照默认的行为返回 <code>true</code>。但在第二种写法中，则有两个参数传入（第二个参数是个空字符串），所以 <code>test</code> 程序能按预定的逻辑得出 <code>false</code>。同样的事情也会发生在 <code>[ ! -z $var ]</code> 身上，但由于存在取反符号 <code>!</code>，默认的返回值是 <code>false</code>，恰好逃过一劫。</p>
+<p>由于在 shell 脚本中少加了一对引号，导致数据库 JVM 启动失败，管理层应用因无法连接数据库，在初始化阶段宣告阵亡，控制层和数据层应用群龙无首，整个虚拟网络系统陷入瘫痪。这个问题在 12 小时之后得到修复。以每个引号两万四千美元的代价，我自修了 shell 脚本编程极有意义的一课。</p>
+<p>第二次事件持续了一天多的时间。为了同时兼容支持 systemd 和不支持 systemd 的系统，需要使用两套不同的 daemon (守护进程) 管理工具。整个流程成功的关键，是正确地判断系统是否支持 systemd。我对 systemd 的直观印象是“一号进程”，即它的 PID 值应当为 1。依据这个原理，我写出了一个花哨的判据：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ <span class="string">&quot;systemd&quot;</span> = $(ps -q 1 -o comm=) ]</span><br></pre></td></tr></table></figure>
+
+<p>我找来了不支持 systemd 的 ubuntu 14.04 和 支持 systemd 的 ubuntu 16.04 进行测试，一切工作正常。但是那天下班不久，就有人找上门来，说数据库又双叒叕不工作了。我登进测试用的机器，一次又一次确认上面的判据，没有发现任何问题。但是为什么数据库没能按照预定的方式启动呢？第二天上班，我一边忍受着上百封邮件的轰炸，一边百般思索追溯原因。直到我忽然心血来潮点开了编译日志，才在一瞬间拨开了云雾：原来 systemd 并不是系统原生的，而是在编译环节安装的，那个时候它还没有占据 PID 1 的位置，这一切要等系统重启之后才会发生。在编译阶段误判了系统的类型，使用了一套无效的配置，自然不能期待数据库可以正常启动了。纠正这个问题也很简单，只要把判据改成下面的语句就可以了：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ $(<span class="built_in">which</span> systemctl) ]</span><br></pre></td></tr></table></figure>
+
+<p>这一遭变故让我感慨良多。人生在世，最怕“逞强”、“装逼”四字。莫逞强，压力无助于解决问题，不如早一点儿回滚代码；留得青山在，不怕没柴烧。莫装逼，华丽的书写背后，满是陷阱；越朴素和简洁，就越接近正确与真理。</p>
+<p>除了和 shell 的种种陷阱斗智斗勇，我还用 Java 开发了一个新特性。这个特性的开发经历了如下的流程：</p>
+<ol>
+<li>提出产品需求。</li>
+<li>经理找工程师写策划书。</li>
+<li>经理、架构师与工程师开会，商议策划书实施方案。</li>
+<li>工程师编写并提交代码。</li>
+<li>测试人员验证产品功能。</li>
+</ol>
+<p>一路跟下来，我发现，上面五个步骤中第二和第三步很难实施。工程师在动手写代码之前，几乎无法知道某个特性应当如何编写，所以策划书到头来还是要服从代码，而不是指导代码。至于架构会议，则一定会演变成名词解释会议，就像哲学指导下的物理学一样，能不帮倒忙就不错了。</p>
+<p>这次让我开发的产品特性与数据库分表机制有关。组里的大佬们先花了一个月开会，争论三四种分表方案孰优孰劣。等会议上的争吵趋于缓和，我跟他们说，这些方案需要付出的代价都太大了，如果想要一个干净的实现，那就只能屈从于一个简单的方案。大佬们于是又纷纷摆出一副“怎么样都好”的姿态，批准了我提出的 API 兼容的设计。又过了一个月，我在代码评审的拉锯中，从各个角度出发完善它的功能：重构类型注册器、调整应用初始化逻辑、加入 transaction (事务) 支持，经过约 30 个版本的演进（以 <code>git commit --amend</code> 计），变成一千多行的庞然大物。</p>
+<p>可能是因为修改面太大，也可能是因为优先级不够高，或是被 CorfuDB 想怎么交就怎么交的任性惯坏了，这次代码提交历经坎坷。第一次因为考虑不周，没有想清楚分表对数据迁移的影响，被撤了下来。数据迁移模块缺乏文档，可以请教的人又身处印度、沟通不畅，我通过看源码摸爬滚打一个礼拜，基本摸清了系统升级和数据迁移的流程。之后的一个礼拜，又成功地把分表机制接入了数据迁移逻辑，满心欢喜地开始了第二次尝试。那个时候，CorfuDB 正饱受高负载条件下“重启即死机”的困扰，组里的一位欧洲小哥开发出了数据预加载通路，可以在应用启动时将缓存调整至活跃状态，显著缩短了开机等待时间。我们都没有意识到彼此的代码在应用初始化时有逻辑冲突。因为他比我早一天提交，因此当测试人员发现机器重启后不能读取数据的时候，在茫茫人海中精确地将我抓获——我的代码第二次从仓库里被踢了出去。</p>
+<p>至八月上旬，产品发布的日期一天天迫近，全组开始了以提升性能为最高目标的大会战。每天早上经理都会预订一间会议室，把开发和测试人员全部聚集起来解决问题。我对下午五点准时离场的行为深表不安，因为有人深夜十一点还在用 profiler 观测系统呢！后来，我采取了凌晨五点回邮件的策略以示回应。这真的不是为了要面子，赶在印度测试小组下班之前联络他们是很重要的。</p>
+<p>鉴于我的产品新特性与提升性能这个最终纲领并无瓜葛，而且前科累累，是一个极大的不安定因素，经理考虑再三，问我能不能延到下个版本。我想，在全组打团的时候自己偷偷溜走刷副本确实不太厚道，于是欣然同意。等待着我的，是为此额外添加的数据迁移负担。</p>
+<p>八月底的我们进入了快乐的海洋。代码提交被严格限制，没有 &quot;ship stop&quot; bug 在身的开发者基本上都开启了带薪休假的时光。我很高兴地为 Dropkick 提交了最后几个 CorfuDB 补丁，包括把日志等级从 DEBUG 升至 INFO。完成 capstone 这一封印之作，过去半年多为之流过的汗、犯下的错，也就一并被埋藏在仓库的历史中了。</p>
+<h2 id="运维与测试"><a href="#运维与测试" class="headerlink" title="运维与测试"></a>运维与测试</h2><p>与开发相比，我更多的时间是在运维与测试中度过的。如果问我入职的最初两个月，在工作上的主要收获是什么，我肯定会说是 git 技法得到了空前的提升。曾经有一项艰巨的任务，需要在两个相差上千次提交的分支间完成一次 git merge。那次化解 merge conflict 足足花费了我三个小时。借着 git merge 的名义，掌控他人代码的生杀大权，是极为难得的体验。做运维就像天气预报一样，做好了没有存在感，做不好会被所有人斥责。像我这样在 git 江湖行走多年的玩家，也曾经失手过——因为老眼昏花在 merge 后导致代码库编译错误。当然，因为这种 bug 具有秒杀全场的优先级，在大多数人还没有意识到发生了什么的时候，我们就果断出手解决了问题。</p>
+<p>做运维让人最不开心的一点，是需要“出警”。流水线打雷下雨的时候，不管我是身处拉斯维加斯、优胜美地还是蒙特雷，都会被邮件或者短信呼叫，然后打开电脑看看到底出了什么问题。如果实在没有带电脑，也得提出一个合理的假设，让别人沿着那思路排查下去——总之不能装死。虽然我承认这其中的一部分故障和 CorfuDB 有关系，但领导们每次出警总是记得把我的邮箱一并写上，就好像多了一位应急修理要员 [1] 能扭转局势一样。最后嘛，大概是我也没怎么帮上忙，他们也没少打扰我。几个月前我还在想，有这么多上下文只有我一人知晓，他们肯定没办法开掉我，不然就没人能帮他们修流水线了。现在，我倒是更希望有人能接手这份运维的工作，把半年来的积累倾囊相授也可以，我只求能享受一份闲暇与清静。</p>
+<p>在 Dropkick 打算采用 CorfuDB 的时候，它不能算是一个成熟的数据库产品。准确得说，它以前从未有过真正的用户，而我们是第一个吃螃蟹（xiang）的。缺乏历练的 CorfuDB 选择采用一种周期很长的开发模式：在 Dropkick 测试中发现数据库的 bug，然后到开源仓库打补丁，随后同步到闭源仓库，编译新的数据库，再重新运行测试。这其中的一个重要环节是代码同步。我们绝不希望把有缺陷的开源代码同步过来，所以需要预先运行一些 NSX 测试集以保证 CorfuDB 的质量。这份工作本来是另一位工程师和我一同分担的，不过由于我更熟悉内部工具与测试流水线，又长期在闭源仓库贡献代码，而且经常和工具链/维稳领导小组 [2] 打交道，那位活跃于 GitHub 的工程师遂逐渐淡出，工作不久就改为由我一人承担。</p>
+<p>代码同步与预测试的流程几乎是固定的。为了从繁琐的手工劳动中解脱，我们萌生了开发自动化工具的想法。经过两个月有意无意地完善，这个近三百行的 shell 脚本已经涵盖了整个同步工作和绝大多数测试工作。如果 CorfuDB 没有 public API 更改，我在脚本运行的六至十五个小时里就可以安心睡大觉。如果测试结果良好，经理就会让我发一辆车，把最近的补丁全搭载上去。不过身为司机也有自己的苦衷：明明是我开的车，但你们上车的动作为什么这么熟练啊？哎，果然我自己写的代码优先级就是不够高，都没有搭车的资格。</p>
+<p>那份自动化 shell 脚本当然不会进仓库，但不能否认它是迄今为止我在公司最得意的作品。在那里，<code>curl</code> 和 <code>awk</code> 珠联璧合，优雅地完成了 API 的调用和解析。虽然偶尔会见到 <code>$(awk &#39;/&quot;ref&quot;/ &#123;print $2&#125;&#39; output.json | uniq | awk -F \&quot; &#39;&#123;print $2&#125;&#39;)</code> 这种诘屈聱牙的片段，但它依旧比相应的 Python 实现简短得多。公司的大部分内部系统，要么提供了 API 接口，要么提供了可以自动 POST 的表单，让我的脚本可以畅通无阻。不过，我也遇到过需要校验 CSRF token (跨站请求伪造) 的变态站点，使人叫苦不迭，不得不绕道而行。</p>
+<h2 id="程序调教"><a href="#程序调教" class="headerlink" title="程序调教"></a>程序调教</h2><p>大多数工程师应该会认为，搞开发比调试程序有趣得多。需要经常调试的，要么是非常不成熟的产品，要么是非常成熟但是记忆失传的产品，我们不幸属于前者的范畴。人们都说，Java 有 IDE 的挟持，调试过程简单粗暴，只要能连上远程 application server，把 debugger 挂载到 JVM 之后，就可以尽情发挥想象力了。不过呢，第一次的经历总会有些特别。</p>
+<p>那是我第一次用 Intellij（虽然 ECE6102 有写过 Java 但当时用的是 eclipse）。四位 staff engineer 围坐在会议室中，看着电视机里我的电脑屏幕，七嘴八舌地下达各种指令：</p>
+<blockquote>
+<p>“按一下 Ctrl + n，输入 XXX 类。”<br>“嗯，能不能按下 Ctrl + b，看一下这个类的定义？”<br>“能不能在第 XXX 行设置一个条件断点？”<br>“能否用 Alt + F7 看看都有谁调用了它？”<br>“application server 的链接已经断了，重新连一下吧。”<br>……</p>
+</blockquote>
+<p>那种气氛迷之尴尬。在我看来，我就像牵线木偶一样任人摆布。不过，在他们看来，把打团战这么宝贵的时间花在 Intellij 快捷键新手教学上，也是对公司资源的极大浪费。好啊，既然我们都不满意，那为啥一开始要投影我的电脑屏幕呢？似乎是因为这次教训，后来 war room 打团就很少用投影了。</p>
+<p>调试的次数多了，会发现组里的各种 bug，除了 CorfuDB 本体的种种缺陷以外，差不多就那么几个来源。关于 Spring Framework 的错误配置是比较浅显的，Application Context 的问题都和它有一腿。深入到具体原因，Java/xml 配置、依赖关系、实现与继承、注解等，全都需要排查一遍，可以算作是体力活了。关于序列化与反序列化的问题，由组里的一个老牌工程师独自担起了整个序列化机制的设计和编码，在这种没有话语权的情况下，我就不多插嘴了。至于多线程引发的故障，虽然归结起来只有 race condition 这一个根本原因，但大家都不愿碰这块烫手山芋。因为和前两者不同，多线程竞争问题是无法调试的。</p>
+<p>我就遇到过一个诡异的案例：某个单元测试在正常运行时总是报错，但只要加了一个断点就立马能够通过。我们无从知道 JVM 线程调度的细节，因此也无法预知什么情况下会发生什么。对付多线程难题，有对症下药和釜底抽薪两种解决思路。对症下药就是找出竞争发生的位置，用 <code>synchronized</code> 包装起来。这药方得良医来开才行，庸医若是想到处加上 <code>synchronized</code> 碰碰运气，则反而容易陷入死锁（如果不是可重入锁）。不过庸医还有釜底抽薪的法子：他们可以考虑把逻辑改成单线程的，这样就安全得很了。用这招就好比捕获异常的时候写上 <code>catch (Throwable e)</code>，其实是为人所不齿的。但是，不少多线程逻辑改成单线程后，并没有性能损失，因此这个药方就得以流传开来。</p>
+<p>长期跟 debug 打交道，让我真正学会了如何做一个云淡风轻的人。初来乍到的我，被安排了一个 P0 就火急火燎寝食难安。后来我身上挂着 5 个 P0、8 个 P1 的时候，想到这么多 bug 绝不可能在一个月内解决掉，竟一下子释然了。把 bugzilla 从邮箱中拉黑，凌晨爬起来看日语直播课，晚上到家了打音游，积极占领原本属于加班的时间。睡眠依旧不足，bug 终究还是要处理，但心头不被石头压着，会好受很多。</p>
+<p>这半年多以来，我要感谢所有一同战斗过的同事。令人惊讶的是，我在职场上打过交道的同事，无不是兢兢业业、一丝不苟，从未遇到过意气用事、厚颜无耻之人。就算我的工作一再成为产品开发的不安定因素，大小经理、以及其他组的领导，也始终表现出宽容大度。当然，与学习同事的优秀品质相比，我倒是更盼望公司早一点儿把奖金发下来，别让我总以为自己的奖金因故被克扣了。急，在线等……</p>
+<p>[1] 应急修理要员：网页赌博游戏《舰队Collection》中用于快速修理受损舰娘的装备。因在交战中受损状况是随机的，所以应急修理要员不如电探（雷达）和水听（声呐）实用。此处指公司应将更多的资源投入到基础设施建设中，减少对运维的不必要的依赖。</p>
+<p>[2] 维稳领导小组：掌握超级权限，跟踪产品开发进度，随时准备把不良代码剔除出产品的小组。</p>
+<h2 id="shell-能力考试题"><a href="#shell-能力考试题" class="headerlink" title="shell 能力考试题"></a>shell 能力考试题</h2><p>通晓 shell 的读者可以通过下面三道试题评估自身水平。题目是我出的，欢迎来信讨论解题过程。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">1. 请从下面四个选项中，选出工作正确的一个。</span><br><span class="line"></span><br><span class="line">A | curl -X POST --digest -u <span class="string">&quot;<span class="variable">$user</span>:<span class="variable">$password</span>&quot;</span> \</span><br><span class="line">  |     https://jenkins.example.com/job/example/build \</span><br><span class="line">  |     --data-urlencode json=<span class="string">&#x27;&#123;&quot;parameter&quot;: [&#123;&quot;name&quot;:&quot;git-checkout&quot;, &quot;value&quot;:$HASH_VALUE&#125;]&#125;&#x27;</span></span><br><span class="line">B | curl -X POST --digest -u <span class="string">&quot;<span class="variable">$user</span>:<span class="variable">$password</span>&quot;</span> \</span><br><span class="line">  |     https://jenkins.example.com/job/example/build \</span><br><span class="line">  |     --data-urlencode json=<span class="string">&#x27;&#123;&quot;parameter&quot;: [&#123;&quot;name&quot;:&quot;git-checkout&quot;, &quot;value&quot;:&quot;$HASH_VALUE&quot;&#125;]&#125;&#x27;</span></span><br><span class="line">C | curl -X POST --digest -u <span class="string">&quot;<span class="variable">$user</span>:<span class="variable">$password</span>&quot;</span> \</span><br><span class="line">  |     https://jenkins.example.com/job/example/build \</span><br><span class="line">  |     --data-urlencode json=<span class="string">&quot;&#123;&#x27;parameter&#x27;: [&#123;&#x27;name&#x27;:&#x27;git-checkout&#x27;, &#x27;value&#x27;:&#x27;<span class="variable">$HASH_VALUE</span>&#x27;&#125;]&#125;&quot;</span></span><br><span class="line">D | curl -X POST --digest -u <span class="string">&quot;<span class="variable">$user</span>:<span class="variable">$password</span>&quot;</span> \</span><br><span class="line">  |     https://jenkins.example.com/job/example/build \</span><br><span class="line">  |     --data-urlencode json=<span class="string">&#x27;&#123;&quot;parameter&quot;: [&#123;&quot;name&quot;:&quot;git-checkout&quot;, &quot;value&quot;:&#x27;</span><span class="string">&#x27;&quot;&#x27;</span><span class="variable">$HASH_VALUE</span><span class="string">&#x27;&quot;&#x27;</span><span class="string">&#x27;&#125;]&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line">2. 请从下面四个选项中，选出工作正确的一个。</span><br><span class="line"></span><br><span class="line">A | find . -<span class="built_in">type</span> f -name <span class="string">&quot;*.avi&quot;</span> -<span class="built_in">exec</span> some-command &#123;&#125; \;</span><br><span class="line">  |</span><br><span class="line">  |</span><br><span class="line">B | <span class="keyword">for</span> file <span class="keyword">in</span> $(find . -<span class="built_in">type</span> f -name <span class="string">&quot;*.avi&quot;</span>); <span class="keyword">do</span></span><br><span class="line">  |     some-command <span class="string">&quot;<span class="variable">$file</span>&quot;</span></span><br><span class="line">  | <span class="keyword">done</span></span><br><span class="line">C | <span class="keyword">for</span> file <span class="keyword">in</span> $(ls *.avi); <span class="keyword">do</span></span><br><span class="line">  |     some-command <span class="string">&quot;<span class="variable">$file</span>&quot;</span></span><br><span class="line">  | <span class="keyword">done</span></span><br><span class="line">D | <span class="keyword">for</span> file <span class="keyword">in</span> ./*.avi; <span class="keyword">do</span></span><br><span class="line">  |     some-command <span class="string">&quot;<span class="variable">$file</span>&quot;</span></span><br><span class="line">  | <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">3. 请从下面四个选项中，选择返回值为 0 的一个。</span><br><span class="line"></span><br><span class="line">A | <span class="keyword">if</span> <span class="literal">false</span>; <span class="keyword">then</span></span><br><span class="line">  |     <span class="built_in">exit</span> 1</span><br><span class="line">  | <span class="keyword">fi</span></span><br><span class="line">  | <span class="built_in">exit</span> 0</span><br><span class="line">B | <span class="keyword">if</span> [ <span class="literal">false</span> ]; <span class="keyword">then</span></span><br><span class="line">  |     <span class="built_in">exit</span> 1</span><br><span class="line">  | <span class="keyword">fi</span></span><br><span class="line">  | <span class="built_in">exit</span> 0</span><br><span class="line">C | <span class="keyword">if</span> [ -n <span class="literal">false</span> ]; <span class="keyword">then</span></span><br><span class="line">  |     <span class="built_in">exit</span> 1</span><br><span class="line">  | <span class="keyword">fi</span></span><br><span class="line">  | <span class="built_in">exit</span> 0</span><br><span class="line">D | <span class="keyword">if</span> [ <span class="string">&quot;false&quot;</span> = <span class="literal">false</span> ]; <span class="keyword">then</span></span><br><span class="line">  |     <span class="built_in">exit</span> 1</span><br><span class="line">  | <span class="keyword">fi</span></span><br><span class="line">  | <span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">答案</span><br><span class="line">1. D</span><br><span class="line">2. A</span><br><span class="line">3. A</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/memo/" rel="tag"># memo</a>
+              <a href="/tags/network/" rel="tag"># network</a>
+              <a href="/tags/debug/" rel="tag"># debug</a>
+              <a href="/tags/VMware/" rel="tag"># VMware</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/07/29/hhkb-keyboard-layout-configuration/" rel="prev" title="HHKB 键盘布局配置方案">
+      <i class="fa fa-chevron-left"></i> HHKB 键盘布局配置方案
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/09/10/double-vm-isolated-network/" rel="next" title="双虚拟机隔离上网完整教程">
+      双虚拟机隔离上网完整教程 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%85%E4%BA%8B%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">故事背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A7%E5%93%81%E5%BC%80%E5%8F%91"><span class="nav-number">2.</span> <span class="nav-text">产品开发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E7%BB%B4%E4%B8%8E%E6%B5%8B%E8%AF%95"><span class="nav-number">3.</span> <span class="nav-text">运维与测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E8%B0%83%E6%95%99"><span class="nav-number">4.</span> <span class="nav-text">程序调教</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shell-%E8%83%BD%E5%8A%9B%E8%80%83%E8%AF%95%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text">shell 能力考试题</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Ming Wen"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Ming Wen</p>
+  <div class="site-description" itemprop="description">Knowledge for action</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">94</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/bitmingw" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;bitmingw" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/bitmingw" title="LinkedIn → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;bitmingw" rel="noopener" target="_blank"><i class="fa fa-fw fa-linkedin"></i>LinkedIn</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/omegaenming/" title="Douban → https:&#x2F;&#x2F;www.douban.com&#x2F;people&#x2F;omegaenming&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Douban</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://feedburner.google.com/fb/a/mailverify?uri=bitmingw/hexo-blog" title="Subscriber → https:&#x2F;&#x2F;feedburner.google.com&#x2F;fb&#x2F;a&#x2F;mailverify?uri&#x3D;bitmingw&#x2F;hexo-blog" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Subscriber</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2014 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ming Wen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://bitmingwblog.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://bitmingw.com/2017/09/09/nsx-transformers-dropkick-dev-note/";
+    this.page.identifier = "2017/09/09/nsx-transformers-dropkick-dev-note/";
+    this.page.title = "NSX Transformers [Dropkick] 开发后记";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://bitmingwblog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

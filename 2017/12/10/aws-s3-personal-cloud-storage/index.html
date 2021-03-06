@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bitmingw.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="你可能用过 Dropbox 和百度网盘之类的云存储服务，不过 AWS S3 才是当今世界上最大的云存储。虽然 S3 服务的对象多为企业用户，你同样可以使用它搭建个人云存储平台。在这篇文章中，我们来看看 S3 API 的配置，以及如何使用 s3cmd 工具与 S3 存储服务交互。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用 AWS S3 搭建个人云存储平台">
+<meta property="og:url" content="https://bitmingw.com/2017/12/10/aws-s3-personal-cloud-storage/index.html">
+<meta property="og:site_name" content="Ming&#39;s Blog">
+<meta property="og:description" content="你可能用过 Dropbox 和百度网盘之类的云存储服务，不过 AWS S3 才是当今世界上最大的云存储。虽然 S3 服务的对象多为企业用户，你同样可以使用它搭建个人云存储平台。在这篇文章中，我们来看看 S3 API 的配置，以及如何使用 s3cmd 工具与 S3 存储服务交互。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2017-12-10-aws-s3-personal-cloud-storage/aws-services.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2017-12-10-aws-s3-personal-cloud-storage/iam-home.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2017-12-10-aws-s3-personal-cloud-storage/iam-user.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2017-12-10-aws-s3-personal-cloud-storage/add-user-1.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2017-12-10-aws-s3-personal-cloud-storage/add-user-2.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2017-12-10-aws-s3-personal-cloud-storage/add-user-3.png">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2017-12-10-aws-s3-personal-cloud-storage/add-user-4.png">
+<meta property="article:published_time" content="2017-12-10T08:00:00.000Z">
+<meta property="article:modified_time" content="2017-12-10T21:35:55.986Z">
+<meta property="article:author" content="Ming Wen">
+<meta property="article:tag" content="tool">
+<meta property="article:tag" content="AWS">
+<meta property="article:tag" content="cloud">
+<meta property="article:tag" content="storage">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bitmingw.github.io/assets/2017-12-10-aws-s3-personal-cloud-storage/aws-services.png">
+
+<link rel="canonical" href="https://bitmingw.com/2017/12/10/aws-s3-personal-cloud-storage/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>用 AWS S3 搭建个人云存储平台 | Ming's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-57646918-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-57646918-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Ming's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/bitmingw" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://bitmingw.com/2017/12/10/aws-s3-personal-cloud-storage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Ming Wen">
+      <meta itemprop="description" content="Knowledge for action">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ming's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          用 AWS S3 搭建个人云存储平台
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2017-12-10 00:00:00 / Modified: 13:35:55" itemprop="dateCreated datePublished" datetime="2017-12-10T00:00:00-08:00">2017-12-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tutorial/" itemprop="url" rel="index"><span itemprop="name">tutorial</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/12/10/aws-s3-personal-cloud-storage/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/10/aws-s3-personal-cloud-storage/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>你可能用过 Dropbox 和百度网盘之类的云存储服务，不过 AWS S3 才是当今世界上最大的云存储。虽然 S3 服务的对象多为企业用户，你同样可以使用它搭建个人云存储平台。在这篇文章中，我们来看看 S3 API 的配置，以及如何使用 <code>s3cmd</code> 工具与 S3 存储服务交互。</p>
+<span id="more"></span>
+
+<h2 id="S3-的特性和价格"><a href="#S3-的特性和价格" class="headerlink" title="S3 的特性和价格"></a>S3 的特性和价格</h2><p>S3 不是会员制的订阅服务，而是像水电一样按使用量计费。费用主要由两个部分组成：</p>
+<ol>
+<li>$0.023 每 GB 的存储费，这一部分按月收取。</li>
+<li>$0.09 每 GB 的下载费。</li>
+</ol>
+<p>与其它云储存服务相比，S3 最大的优势在于靠谱。官方宣称 S3 数据的完整性（不会丢失和破坏）可达小数点后 12 个 9。与百度网盘等免费存储服务相比，S3 没有政策风险，不会有人检查和删除你的数据，也不会有限速和强制安装客户端之类的事情。与 Dropbox / iCloud 等订阅存储服务相比，S3 按需付费的机制在一些情形下更为廉价。S3 便捷和不受限制的共享能力也是一个加分项。</p>
+<h2 id="API-配置"><a href="#API-配置" class="headerlink" title="API 配置"></a>API 配置</h2><p>每个 AWS 账户可以创建不超过 100 个 S3 存储筐 (bucket)。每个 bucket 的名字都是全球唯一的。在一个 bucket 里面，你可以创建任意多的文件夹，上传和下载文件。这一切操作都可以在浏览器中进行，就像用浏览器打开了一个云端的资源管理器一样。不过，手动维护文件实在是太过辛苦了。我们需要一个能够自动化同步的工具，而 API 的协助是必不可少的。</p>
+<p>AWS 使用 IAM (Identity and Access Management) 服务来管理所有 API 的使用。我们要在 IAM 中创建一个独立的“用户”，添加 S3 所需的权限，并获取 access key 和 secret key。下面是图解的详细操作流程：</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2017-12-10-aws-s3-personal-cloud-storage/aws-services.png">
+    <p>在 AWS 服务列表中搜索 IAM</p>
+</div>
+
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2017-12-10-aws-s3-personal-cloud-storage/iam-home.png">
+    <p>进入 IAM 主页，点击左侧的 Users 选项</p>
+</div>
+
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2017-12-10-aws-s3-personal-cloud-storage/iam-user.png">
+    <p>添加一个新用户</p>
+</div>
+
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2017-12-10-aws-s3-personal-cloud-storage/add-user-1.png">
+    <p>指定用户名，并开启应用程序访问</p>
+</div>
+
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2017-12-10-aws-s3-personal-cloud-storage/add-user-2.png">
+    <p>为用户添加 S3 完全访问权限</p>
+</div>
+
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2017-12-10-aws-s3-personal-cloud-storage/add-user-3.png">
+    <p>回顾当前的设定</p>
+</div>
+
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2017-12-10-aws-s3-personal-cloud-storage/add-user-4.png">
+    <p>下载当前用户的 access key 和 secret key</p>
+</div>
+
+<p>创建用户时，你只有一次机会查看和下载 secret key。所以请务必下载 csv 文件，并存放在一个安全的地方。如果 secret key 丢失或被盗用，你可以吊销当前的 key 并重新生成一个 access key - secret key 密钥对。</p>
+<p>现在你已经拥有了一个可以控制 S3 的用户，并获取了调用 API 所需的 access key 和 secret key。下面就可以使用 <code>s3cmd</code> 工具管理你的存储空间了。</p>
+<h2 id="s3cmd-工具的配置和使用"><a href="#s3cmd-工具的配置和使用" class="headerlink" title="s3cmd 工具的配置和使用"></a>s3cmd 工具的配置和使用</h2><p><code>s3cmd</code> 是一个强大的 S3 交互工具。它由 Python 写成，可以通过 pip 安装到个人电脑上。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install s3cmd</span><br></pre></td></tr></table></figure>
+
+<p>第一次使用 <code>s3cmd</code> 前，需要先填写必要的信息。运行 <code>s3cmd --configure</code>，填入 csv 文件中的 access key 和 secret key，其余选项通常可以使用默认设定。设置结束后，在 <code>$HOME</code> 目录下会出现一个 <code>.s3cfg</code> 文件，里面存储了所有的设置信息。你可以使用文本编辑器进一步修改它。</p>
+<p>下面列举了 <code>s3cmd</code> 的基本操作。</p>
+<h3 id="创建一个-bucket"><a href="#创建一个-bucket" class="headerlink" title="创建一个 bucket"></a>创建一个 bucket</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s3cmd mb s3://bucket-name</span><br></pre></td></tr></table></figure>
+
+<h3 id="显示所有已创建的-bucket"><a href="#显示所有已创建的-bucket" class="headerlink" title="显示所有已创建的 bucket"></a>显示所有已创建的 bucket</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s3cmd ls</span><br></pre></td></tr></table></figure>
+
+<h3 id="显示一个-bucket-中的内容"><a href="#显示一个-bucket-中的内容" class="headerlink" title="显示一个 bucket 中的内容"></a>显示一个 bucket 中的内容</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 只显示根目录下的文件和文件夹</span></span><br><span class="line">s3cmd ls s3://bucket-1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示所有文件和文件夹</span></span><br><span class="line"><span class="comment"># -r 可以用 --recursive 代替，下同</span></span><br><span class="line">s3cmd ls -r s3://bucket-1</span><br><span class="line">s3cmd la s3://bucket-1</span><br></pre></td></tr></table></figure>
+
+<h3 id="上传文件"><a href="#上传文件" class="headerlink" title="上传文件"></a>上传文件</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 上传单个文件</span></span><br><span class="line">s3cmd put file-1 s3://bucket-1/dir-1/file-1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上传整个文件夹</span></span><br><span class="line"><span class="comment"># dir-1 将存放在 dir-2 之下</span></span><br><span class="line">s3cmd put -r dir-1 s3://bucket-1/dir-2/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 与 put -r 类似</span></span><br><span class="line"><span class="comment"># 但只上传已修改的文件</span></span><br><span class="line"><span class="comment"># 相当于 Linux 中的 rsync</span></span><br><span class="line">s3cmd sync dir-1 s3://bucket-1/dir-2/</span><br></pre></td></tr></table></figure>
+
+<h3 id="下载文件"><a href="#下载文件" class="headerlink" title="下载文件"></a>下载文件</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载单个文件</span></span><br><span class="line">s3cmd get s3://bucket-1/dir-1/file-1 file-1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载整个文件夹</span></span><br><span class="line"><span class="comment"># 将在当前路径创建 dir-1 文件夹</span></span><br><span class="line">s3cmd get -r s3://bucket-1/dir-1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载整个文件夹</span></span><br><span class="line"><span class="comment"># 直接下载内容，不创建 dir-1 文件夹</span></span><br><span class="line">s3cmd get -r s3://bucket-1/dir-1/</span><br></pre></td></tr></table></figure>
+
+<h3 id="复制文件"><a href="#复制文件" class="headerlink" title="复制文件"></a>复制文件</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 复制单个文件</span></span><br><span class="line">s3cmd cp s3://bucket-1/file-1 s3://bucket-2/file-2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 复制整个文件夹的内容</span></span><br><span class="line">s3cmd cp s3://bucket-1/dir-1/ s3://bucket-2/dir-2/</span><br></pre></td></tr></table></figure>
+
+<h3 id="移动文件"><a href="#移动文件" class="headerlink" title="移动文件"></a>移动文件</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 移动单个文件</span></span><br><span class="line">s3cmd mv s3://bucket-1/file-1 s3://bucket-2/file-2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 移动整个文件夹的内容</span></span><br><span class="line">s3cmd mv s3://bucket-1/dir-1/ s3://bucket-2/dir-2/</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除文件"><a href="#删除文件" class="headerlink" title="删除文件"></a>删除文件</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 删除单个文件</span></span><br><span class="line">s3cmd rm s3://bucket-1/file-1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除整个文件夹</span></span><br><span class="line">s3cmd rm -r s3://bucket-1/dir-1/</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除-bucket"><a href="#删除-bucket" class="headerlink" title="删除 bucket"></a>删除 bucket</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 删除一个空的 bucket</span></span><br><span class="line">s3cmd rb s3://bucket-1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除 bucket 和其中的所有内容</span></span><br><span class="line">s3cmd rb --force s3://bucket-1</span><br></pre></td></tr></table></figure>
+
+<p>有关 <code>s3cmd</code> 的更多信息，可以访问其官方网站 <a target="_blank" rel="noopener" href="http://s3tools.org/s3cmd">http://s3tools.org/s3cmd</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/tool/" rel="tag"># tool</a>
+              <a href="/tags/AWS/" rel="tag"># AWS</a>
+              <a href="/tags/cloud/" rel="tag"># cloud</a>
+              <a href="/tags/storage/" rel="tag"># storage</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/11/04/java-stream-with-functional-interface/" rel="prev" title="Java 8 stream 与 functional interface 的珠联璧合">
+      <i class="fa fa-chevron-left"></i> Java 8 stream 与 functional interface 的珠联璧合
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/12/22/2017-retrospect/" rel="next" title="2017 年终总结">
+      2017 年终总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#S3-%E7%9A%84%E7%89%B9%E6%80%A7%E5%92%8C%E4%BB%B7%E6%A0%BC"><span class="nav-number">1.</span> <span class="nav-text">S3 的特性和价格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API-%E9%85%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">API 配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#s3cmd-%E5%B7%A5%E5%85%B7%E7%9A%84%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">s3cmd 工具的配置和使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA-bucket"><span class="nav-number">3.1.</span> <span class="nav-text">创建一个 bucket</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E6%89%80%E6%9C%89%E5%B7%B2%E5%88%9B%E5%BB%BA%E7%9A%84-bucket"><span class="nav-number">3.2.</span> <span class="nav-text">显示所有已创建的 bucket</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E4%B8%80%E4%B8%AA-bucket-%E4%B8%AD%E7%9A%84%E5%86%85%E5%AE%B9"><span class="nav-number">3.3.</span> <span class="nav-text">显示一个 bucket 中的内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6"><span class="nav-number">3.4.</span> <span class="nav-text">上传文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E6%96%87%E4%BB%B6"><span class="nav-number">3.5.</span> <span class="nav-text">下载文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%E6%96%87%E4%BB%B6"><span class="nav-number">3.6.</span> <span class="nav-text">复制文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E6%96%87%E4%BB%B6"><span class="nav-number">3.7.</span> <span class="nav-text">移动文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6"><span class="nav-number">3.8.</span> <span class="nav-text">删除文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4-bucket"><span class="nav-number">3.9.</span> <span class="nav-text">删除 bucket</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Ming Wen"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Ming Wen</p>
+  <div class="site-description" itemprop="description">Knowledge for action</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">94</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/bitmingw" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;bitmingw" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/bitmingw" title="LinkedIn → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;bitmingw" rel="noopener" target="_blank"><i class="fa fa-fw fa-linkedin"></i>LinkedIn</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/omegaenming/" title="Douban → https:&#x2F;&#x2F;www.douban.com&#x2F;people&#x2F;omegaenming&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Douban</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://feedburner.google.com/fb/a/mailverify?uri=bitmingw/hexo-blog" title="Subscriber → https:&#x2F;&#x2F;feedburner.google.com&#x2F;fb&#x2F;a&#x2F;mailverify?uri&#x3D;bitmingw&#x2F;hexo-blog" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Subscriber</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2014 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ming Wen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://bitmingwblog.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://bitmingw.com/2017/12/10/aws-s3-personal-cloud-storage/";
+    this.page.identifier = "2017/12/10/aws-s3-personal-cloud-storage/";
+    this.page.title = "用 AWS S3 搭建个人云存储平台";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://bitmingwblog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

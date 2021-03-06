@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bitmingw.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="在这篇文章中，我们来讲解一下 git submodule 的实战用法，包括：  注册 git 子模块 从已有的文件创建 git 子模块 向上同步主仓库 向下同步子模块仓库 疑难杂症">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git submodule 实用教程">
+<meta property="og:url" content="https://bitmingw.com/2018/08/19/git-submodule-tutorial/index.html">
+<meta property="og:site_name" content="Ming&#39;s Blog">
+<meta property="og:description" content="在这篇文章中，我们来讲解一下 git submodule 的实战用法，包括：  注册 git 子模块 从已有的文件创建 git 子模块 向上同步主仓库 向下同步子模块仓库 疑难杂症">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-08-19T07:00:00.000Z">
+<meta property="article:modified_time" content="2018-08-20T01:35:15.326Z">
+<meta property="article:author" content="Ming Wen">
+<meta property="article:tag" content="git">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://bitmingw.com/2018/08/19/git-submodule-tutorial/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>git submodule 实用教程 | Ming's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-57646918-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-57646918-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Ming's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/bitmingw" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://bitmingw.com/2018/08/19/git-submodule-tutorial/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Ming Wen">
+      <meta itemprop="description" content="Knowledge for action">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ming's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          git submodule 实用教程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2018-08-19 00:00:00 / Modified: 18:35:15" itemprop="dateCreated datePublished" datetime="2018-08-19T00:00:00-07:00">2018-08-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tutorial/" itemprop="url" rel="index"><span itemprop="name">tutorial</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/08/19/git-submodule-tutorial/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/08/19/git-submodule-tutorial/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在这篇文章中，我们来讲解一下 <code>git submodule</code> 的实战用法，包括：</p>
+<ol>
+<li>注册 git 子模块</li>
+<li>从已有的文件创建 git 子模块</li>
+<li>向上同步主仓库</li>
+<li>向下同步子模块仓库</li>
+<li>疑难杂症</li>
+</ol>
+<span id="more"></span>
+
+<br />
+
+<h2 id="注册-git-子模块"><a href="#注册-git-子模块" class="headerlink" title="注册 git 子模块"></a>注册 git 子模块</h2><p>假设我们有主仓库 <code>main-module.git</code>，远程地址 <code>https://github.com/bitmingw/main-module.git</code>，目录结构</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">└── main.txt</span><br></pre></td></tr></table></figure>
+
+<p>以及仓库 <code>sub-module.git</code>，远程地址 <code>https://github.com/bitmingw/sub-module.git</code>，目录结构</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">└── sub.txt</span><br></pre></td></tr></table></figure>
+
+<p>如果想要将仓库 <code>sub-module.git</code> 注册成为主仓库 <code>main-module.git</code> 的一个子模块，可以使用如下指令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> main-module/</span></span><br><span class="line">git submodule add https://github.com/bitmingw/sub-module.git</span><br><span class="line">git commit -m &quot;add submodule version 1.0&quot;</span><br></pre></td></tr></table></figure>
+
+<p>git 会自动从远程服务器 clone <code>sub-module.git</code>，之后 <code>main-module.git</code> 的目录会变成这个样子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── main.txt</span><br><span class="line">└── sub-module</span><br><span class="line">    └── sub.txt</span><br></pre></td></tr></table></figure>
+
+<p>由于添加 git 子模块的操作本身也是一个提交，因此它仅仅对 <code>main-module.git</code> 的当前分支有效，另外的分支不会感知到这一变化。</p>
+<br />
+
+<h2 id="从已有的文件创建-git-子模块"><a href="#从已有的文件创建-git-子模块" class="headerlink" title="从已有的文件创建 git 子模块"></a>从已有的文件创建 git 子模块</h2><p>大多数时候，git 子模块不是凭空创建的，而是从项目中已有的文件拆分出来的。从已有的文件创建 git 子模块需要做三件事：首先为拆分出来的文件创建新的 git 仓库，然后从主仓库中将独立出去的文件移除，最后再注册 git 子模块。</p>
+<p>例如，假设 <code>main-module.git</code> 的目录结构如下所示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── main.txt</span><br><span class="line">└── sub-module</span><br><span class="line">    └── sub.txt</span><br></pre></td></tr></table></figure>
+
+<p>它有 <code>v1.0</code> 和 <code>v2.0</code> 两个分支，在 <code>v2.0</code> 分支中，我们想让 <code>sub-module</code> 文件夹变成 <code>sub-module.git</code> 子模块。</p>
+<p>第一步，为 <code>sub-module</code> 创建一个单独的 git 仓库：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git checkout v2.0</span><br><span class="line">cd sub-module</span><br><span class="line">git init</span><br><span class="line">git add sub.txt</span><br><span class="line">git commit -m &quot;version 1.0 of sub-module&quot;</span><br><span class="line">git remote add origin https://github.com/bitmingw/sub-module.git</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+
+<p>第二步，从 <code>main-module.git</code> 中删除 <code>sub-module</code> 文件夹：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ..  # main-module/</span><br><span class="line">git rm -r sub-module</span><br><span class="line">git commit -m &quot;remove sub-module directory&quot;</span><br></pre></td></tr></table></figure>
+
+<p>第三步，将 <code>sub-module.git</code> 注册为 <code>main-module.git</code> 的子模块</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> main-module/</span></span><br><span class="line">git submodule add https://github.com/bitmingw/sub-module.git</span><br><span class="line">git commit -m &quot;add submodule version 1.0&quot;</span><br></pre></td></tr></table></figure>
+
+<br />
+
+<h2 id="向上同步主仓库"><a href="#向上同步主仓库" class="headerlink" title="向上同步主仓库"></a>向上同步主仓库</h2><p>如果你是子模块的开发者，当你希望主仓库使用新版本的子模块时，需要向上同步主仓库。</p>
+<p>在主仓库中，可以使用 <code>git submodule status</code> 和 <code>git status</code> 查看子模块的状态。</p>
+<p>如果主仓库使用的是最新版本的子模块，会显示如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">~&#x2F;main-module$ git submodule status</span><br><span class="line"> 359bce6ea04c082229fb009013a4dd14c8af4f0c sub-module (heads&#x2F;master)</span><br><span class="line"></span><br><span class="line">~&#x2F;main-module$ git status</span><br><span class="line">On branch v2.0</span><br><span class="line">Your branch is up-to-date with &#39;origin&#x2F;v2.0</span><br><span class="line">nothing to commit, working directory clean</span><br></pre></td></tr></table></figure>
+
+<p>当子模块有未被使用的新提交时（例如在 <code>sub-module.git</code> 中执行 <code>git pull --rebase</code> 拉取新的内容后），git 会给予提示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">~&#x2F;main-module$ git submodule status</span><br><span class="line">+773275124c59b906da71e892b2f9d53c633bc252 sub-module (heads&#x2F;master)</span><br><span class="line"></span><br><span class="line">~&#x2F;main-module$ git status</span><br><span class="line">On branch v2.0</span><br><span class="line">Your branch is up-to-date with &#39;origin&#x2F;v2.0&#39;.</span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">        modified:   sub-module (new commits)</span><br><span class="line"></span><br><span class="line">no changes added to commit (use &quot;git add&quot; and&#x2F;or &quot;git commit -a&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>此时，如果想要将子模块的内容同步到主仓库，只需要在主仓库中创建一个新的提交即可：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> main-module/</span></span><br><span class="line">git add sub-module</span><br><span class="line">git commit -m &quot;use sub-module version 1.1&quot;</span><br></pre></td></tr></table></figure>
+
+<br />
+
+<h2 id="向下同步子模块仓库"><a href="#向下同步子模块仓库" class="headerlink" title="向下同步子模块仓库"></a>向下同步子模块仓库</h2><p>如果你是主仓库的开发者，你可能不想使用最新版本的子模块，而是使用主仓库中指定版本的子模块，此时可以使用下面的指令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git submodule update</span><br></pre></td></tr></table></figure>
+
+<p>在使用该指令前，主仓库和子模块的 <code>git status</code> 分别是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">~&#x2F;main-module$ git status</span><br><span class="line">On branch v2.0</span><br><span class="line">Your branch is up-to-date with &#39;origin&#x2F;v2.0&#39;.</span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line">        modified:   sub-module (new commits)</span><br><span class="line"></span><br><span class="line">no changes added to commit (use &quot;git add&quot; and&#x2F;or &quot;git commit -a&quot;)</span><br><span class="line"></span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line"></span><br><span class="line">~&#x2F;main-module&#x2F;sub-module$ git status</span><br><span class="line">On branch master</span><br><span class="line">Your branch is up-to-date with &#39;origin&#x2F;master&#39;.</span><br><span class="line">nothing to commit, working directory clean</span><br></pre></td></tr></table></figure>
+
+<p>使用了 <code>git submodule update</code> 之后，两个仓库的 <code>git status</code> 信息变成了这个样子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">~&#x2F;main-module$ git status</span><br><span class="line">On branch v2.0</span><br><span class="line">Your branch is up-to-date with &#39;origin&#x2F;v2.0&#39;.</span><br><span class="line">nothing to commit, working directory clean</span><br><span class="line"></span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line"></span><br><span class="line">~&#x2F;main-module&#x2F;sub-module$ git status</span><br><span class="line">HEAD detached at 359bce6</span><br><span class="line">nothing to commit, working directory clean</span><br></pre></td></tr></table></figure>
+
+<p>这样，主仓库的开发者就可以从一个干净的空间开始工作了。</p>
+<br />
+
+<h2 id="疑难杂症"><a href="#疑难杂症" class="headerlink" title="疑难杂症"></a>疑难杂症</h2><p>还记得我们是从 <code>v2.0</code> 分支引入子模块的么？假如现在要查看 <code>v1.0</code> 分支，会发生什么呢？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">~&#x2F;main-module$ git checkout v1.0</span><br><span class="line">error: The following untracked working tree files would be overwritten by checkout:</span><br><span class="line">        sub-module&#x2F;sub.txt</span><br><span class="line">Please move or remove them before you can switch branches.</span><br><span class="line">Aborting</span><br></pre></td></tr></table></figure>
+
+<p>难道有了子模块之后我们就回不去了？？情况没有那么糟糕，我们可以通过 <code>git checkout -f v1.0</code> 强行回去。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">~&#x2F;main-module$ git checkout -f v1.0</span><br><span class="line">warning: unable to rmdir sub-module: Directory not empty</span><br><span class="line">Switched to branch &#39;v1.0&#39;</span><br><span class="line">Your branch is up-to-date with &#39;origin&#x2F;v1.0&#39;.</span><br></pre></td></tr></table></figure>
+
+<p>不过这个时候要注意，由于 <code>sub-module</code> 没有被移除，因此切换到 <code>v1.0</code> 分支以后，你看到的 <code>sub-module</code> 文件夹依然是个子模块。也就是说，子模块穿越了时空来到了 <code>v1.0</code> 分支…… 嗯这个行为似乎不是我们期望的那个样子。</p>
+<p>如果你真的想回到 <code>v1.0</code> 分支的非子模块的 <code>sub-module</code>，那你不得不在切换分支前把这个子模块卸载掉：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git rm -r sub-module</span><br><span class="line">git commit -m &quot;remove submodule&quot; </span><br><span class="line">git checkout v1.0</span><br></pre></td></tr></table></figure>
+
+<p>如果你想从 <code>v1.0</code> 分支回到 <code>v2.0</code>，也会遇到一些问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">~&#x2F;main-module$ git checkout v2.0</span><br><span class="line">M       sub-module</span><br><span class="line">Switched to branch &#39;v2.0&#39;</span><br><span class="line">Your branch is up-to-date with &#39;origin&#x2F;v2.0&#39;.</span><br><span class="line"></span><br><span class="line">~&#x2F;main-module$ git status</span><br><span class="line">On branch v2.0</span><br><span class="line">Your branch is up-to-date with &#39;origin&#x2F;v2.0&#39;.</span><br><span class="line">Changes not staged for commit:</span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line">  (commit or discard the untracked or modified content in submodules)</span><br><span class="line"></span><br><span class="line">        modified:   sub-module (modified content)</span><br><span class="line"></span><br><span class="line">no changes added to commit (use &quot;git add&quot; and&#x2F;or &quot;git commit -a&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>经过了 <code>git checkout -f v1.0</code> 和 <code>git checkout v2.0</code> 之后，子模块的文件竟然被 git 删掉了。而且这个时候无论是 <code>git submodule update</code> 还是 <code>git checkout -- sub-module</code> 都不好使了。到底应该怎么办呢？</p>
+<p>答案是在子模块内部使用 <code>git reset</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">~&#x2F;main-module&#x2F;sub-module$ git reset --hard HEAD</span><br><span class="line">HEAD is now at 359bce6 version 1.0 of sub-module</span><br><span class="line"></span><br><span class="line">~&#x2F;main-module&#x2F;sub-module$ git status</span><br><span class="line">HEAD detached at 359bce6</span><br><span class="line">nothing to commit, working directory clean</span><br></pre></td></tr></table></figure>
+
+<p>从这一部分的演示可以看出，<code>git submodule</code> 的设计对从已有文件拆分出来的子模块来说是非常糟糕的。或许这会成为大家尽量避免使用 git 子模块的原因之一吧。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/git/" rel="tag"># git</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/06/17/intellij-idea-navigation-shortcut/" rel="prev" title="Intellij IDEA 导航类快捷键指南">
+      <i class="fa fa-chevron-left"></i> Intellij IDEA 导航类快捷键指南
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/10/05/hiring-in-georgia-tech/" rel="next" title="十一招聘吐槽大会">
+      十一招聘吐槽大会 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C-git-%E5%AD%90%E6%A8%A1%E5%9D%97"><span class="nav-number">1.</span> <span class="nav-text">注册 git 子模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E5%B7%B2%E6%9C%89%E7%9A%84%E6%96%87%E4%BB%B6%E5%88%9B%E5%BB%BA-git-%E5%AD%90%E6%A8%A1%E5%9D%97"><span class="nav-number">2.</span> <span class="nav-text">从已有的文件创建 git 子模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E4%B8%8A%E5%90%8C%E6%AD%A5%E4%B8%BB%E4%BB%93%E5%BA%93"><span class="nav-number">3.</span> <span class="nav-text">向上同步主仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E4%B8%8B%E5%90%8C%E6%AD%A5%E5%AD%90%E6%A8%A1%E5%9D%97%E4%BB%93%E5%BA%93"><span class="nav-number">4.</span> <span class="nav-text">向下同步子模块仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87"><span class="nav-number">5.</span> <span class="nav-text">疑难杂症</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Ming Wen"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Ming Wen</p>
+  <div class="site-description" itemprop="description">Knowledge for action</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">94</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/bitmingw" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;bitmingw" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/bitmingw" title="LinkedIn → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;bitmingw" rel="noopener" target="_blank"><i class="fa fa-fw fa-linkedin"></i>LinkedIn</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/omegaenming/" title="Douban → https:&#x2F;&#x2F;www.douban.com&#x2F;people&#x2F;omegaenming&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Douban</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://feedburner.google.com/fb/a/mailverify?uri=bitmingw/hexo-blog" title="Subscriber → https:&#x2F;&#x2F;feedburner.google.com&#x2F;fb&#x2F;a&#x2F;mailverify?uri&#x3D;bitmingw&#x2F;hexo-blog" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Subscriber</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2014 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ming Wen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://bitmingwblog.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://bitmingw.com/2018/08/19/git-submodule-tutorial/";
+    this.page.identifier = "2018/08/19/git-submodule-tutorial/";
+    this.page.title = "git submodule 实用教程";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://bitmingwblog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

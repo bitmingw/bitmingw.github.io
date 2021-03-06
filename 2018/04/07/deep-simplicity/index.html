@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bitmingw.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="2005 年，科普作家 John Gribbin 出版了 Deep Simplicity (《深奥的简洁》) 一书，通过阐述混沌系统理论，为读者提供了认知复杂世界的新工具。作者在序言中说到，一个混沌系统需要满足两个条件：其一，系统状态对初始条件敏感；其二，系统具有反馈机制。总体来说，《深奥的简洁》是一本不错的读物，向读者揭示了一些复杂现象背后共有的简单逻辑。不过我认为，作者的部分论述仅仅停留在了表">
+<meta property="og:type" content="article">
+<meta property="og:title" content="漫谈《深奥的简洁》">
+<meta property="og:url" content="https://bitmingw.com/2018/04/07/deep-simplicity/index.html">
+<meta property="og:site_name" content="Ming&#39;s Blog">
+<meta property="og:description" content="2005 年，科普作家 John Gribbin 出版了 Deep Simplicity (《深奥的简洁》) 一书，通过阐述混沌系统理论，为读者提供了认知复杂世界的新工具。作者在序言中说到，一个混沌系统需要满足两个条件：其一，系统状态对初始条件敏感；其二，系统具有反馈机制。总体来说，《深奥的简洁》是一本不错的读物，向读者揭示了一些复杂现象背后共有的简单逻辑。不过我认为，作者的部分论述仅仅停留在了表">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2018-04-07-deep-simplicity/slope-field.jpg">
+<meta property="og:image" content="https://bitmingw.github.io/assets/2018-04-07-deep-simplicity/school-days.jpg">
+<meta property="article:published_time" content="2018-04-07T07:00:00.000Z">
+<meta property="article:modified_time" content="2018-04-08T00:42:55.973Z">
+<meta property="article:author" content="Ming Wen">
+<meta property="article:tag" content="science">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bitmingw.github.io/assets/2018-04-07-deep-simplicity/slope-field.jpg">
+
+<link rel="canonical" href="https://bitmingw.com/2018/04/07/deep-simplicity/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>漫谈《深奥的简洁》 | Ming's Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-57646918-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-57646918-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Ming's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/bitmingw" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://bitmingw.com/2018/04/07/deep-simplicity/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Ming Wen">
+      <meta itemprop="description" content="Knowledge for action">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ming's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          漫谈《深奥的简洁》
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2018-04-07 00:00:00 / Modified: 17:42:55" itemprop="dateCreated datePublished" datetime="2018-04-07T00:00:00-07:00">2018-04-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/idea/" itemprop="url" rel="index"><span itemprop="name">idea</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/04/07/deep-simplicity/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/04/07/deep-simplicity/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>2005 年，科普作家 John Gribbin 出版了 <em>Deep Simplicity</em> (《深奥的简洁》) 一书，通过阐述混沌系统理论，为读者提供了认知复杂世界的新工具。作者在序言中说到，一个混沌系统需要满足两个条件：其一，系统状态对初始条件敏感；其二，系统具有反馈机制。总体来说，《深奥的简洁》是一本不错的读物，向读者揭示了一些复杂现象背后共有的简单逻辑。不过我认为，作者的部分论述仅仅停留在了表面现象，甚至有意避开讨论混沌系统的本质。</p>
+<span id="more"></span>
+
+<br />
+
+<h2 id="从导函数到反馈机制"><a href="#从导函数到反馈机制" class="headerlink" title="从导函数到反馈机制"></a>从导函数到反馈机制</h2><p>不知各位在高中学习导函数的时候，有没有想过，这个东西有什么用。如果我没记错，柯景腾在《那些年》里说过，十年以后我连 $log$ 是什么意思都不知道，但依然可以活着好好的。虽然导函数的意义对大多数人来说确实不是生死攸关的事，但它对于认知世界还是大有帮助的。</p>
+<p>牛顿说，物体在不受外力作用的情况下，会保持静止或匀速直线运动。他的条件太理想了，世界上的事物无时无刻都在与周围环境相互作用。既然有相互作用，就会产生变化。为了预测一个系统的状态，就需要研究变化率。而变化率，正是用状态的导函数描述的。</p>
+<p>当系统状态的变化率与状态本身有关时，它就具备了反馈机制。反馈机制在现实世界中是极为普遍的。举一个银行存款的例子，当银行的利率一定时，你的余额越大，收获的利息就越多；更多的利息意味着更大的余额，以及下一轮更多的利息收益，如此循环往复。假设银行的年利率是 100%，1 元的本金，按年支付利息，一年后可以拿到 2 元；按季度支付利息，可以拿到 2.44 元；按月支付利息，可以拿到 2.61 元；如果每个瞬间都支付利息，最多可以拿到 $e$ 元。这里的 $e$ 就是自然对数的底数，它表征了等比增长的极限。当然，柯景腾连 $log$ 都不想知道，自然也不会关心 $e$，他只要能懂沈佳宜就够了。</p>
+<p>导函数可以刻画连续条件下的变化，在离散的世界里（比如回合制的场景），这一使命则由递推公式承担。无论导函数还是递推公式，只要它们与当前的状态有关，就可以说系统具有反馈机制。</p>
+<p>有了反馈，变化率就会受到变化结果的影响，变化率和变化彼此互为因果，相互纠缠，演化出了这个纷繁的世界。作者在书中深入剖析了反馈机制，是值得肯定的。</p>
+<br />
+
+<h2 id="反馈的复杂化"><a href="#反馈的复杂化" class="headerlink" title="反馈的复杂化"></a>反馈的复杂化</h2><p>然而，作者对另一个条件——系统对初始状态敏感——行文上却有些含糊其辞。他没有解释这一切是怎么产生的，而是试图通过一些简单的案例，如 $bx - bx^2$ 在递推过程中表现出的特殊行为，来告知读者：你承认吧，这件事是客观存在的。作为一本科普读物，又选取了“深奥的简洁”这样的标题，写作本书的目的，应当是为了向读者展示，那些看似复杂的现象，其背后的组成不过是简单的原理。但是，我不太喜欢这种浅尝辄止的态度。没能把为什么会出现“对初始条件敏感”这个现象讲清楚，可以认为是本书的一个重大缺憾。</p>
+<p>在解答这个问题前，请先看一张图</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2018-04-07-deep-simplicity/slope-field.jpg">
+    <p>微分方程的向量场 [1]</p>
+</div>
+
+<p>这张图显示的是某个微分方程的向量场与一些轨迹线。向量场刻画了微分方程在一系列状态下的变化率的大小和方向，而轨迹线则描绘了状态转移的过程。从这张图不难看出，在某一段区域内，极小的变化可能会昭示着完全不同的结局——向右上方运动，还是向右下方运动。这就是我们所说的对初始条件敏感。</p>
+<p>几乎所有的微分方程，都存在对初始条件敏感的特性。而那些具备反馈机制的系统，由于其状态和导函数的相互作用是用微分方程描述的，所以自然继承了这样的特性。</p>
+<p>不过，仅仅是对初始条件敏感，并不是件可怕的事情。正如上图的方程一样，如果可以把初始条件安排在远离敏感区域的地方，我们依旧能预测未来的走势。然而，当系统的组织结构变得稍稍复杂时，人类就无法有效地观察敏感区域了，甚至可能每一处空间都是敏感区域。在这种情况下，我们能做的，除了接受命运的安排，再无其他。</p>
+<p>刘慈欣笔下的三体人就生活在这样一种稍稍复杂的系统中 [2]。他们的星系有三颗恒星，彼此间的引力会影响各自的动量，最后形成一系列不确定的轨迹。已经证明，除了几种特殊情形之外，三体问题是没有解析解的，只能通过递推模拟未来的状态；而考虑到系统对初始条件敏感的特性，预测的结果也仅适用于较短的一段时间。所以三体人只能在未知的末日降临之前，寻找他们新的家园。</p>
+<p>与三体类似，三个人组成的系统也是一种稍稍复杂的系统。这个系统的敏感区域是如此得大，以至于即便做出平衡的努力，也很难保持长期稳定运行。所以说，雪菜和冬马之间必有一个小三；即便诚哥能暂时稳住言叶和世界，他们的未来也必定是杀机四伏。</p>
+<div style="text-align: center">
+    <img src="https://bitmingw.github.io/assets/2018-04-07-deep-simplicity/school-days.jpg">
+    <p>诚哥你的时辰不多了 [3]</p>
+</div>
+
+<p>我相信，作者完全知晓理论与实践间的巨大鸿沟。混沌理论可以用来解释很多现象，但由于系统的复杂程度超出了人类能处理的极限，这种理论并不能预测未来。不过这也是一件好事。人类要是能活成上帝，可能也是蛮无聊的。</p>
+<br />
+
+<h2 id="不要回复？不用回复！"><a href="#不要回复？不用回复！" class="headerlink" title="不要回复？不用回复！"></a>不要回复？不用回复！</h2><p>本书的最后，作者简要讨论了一些寻找外星人的方法。关于寻找外星人的计划，霍金是坚定的反对者。相比之下，我属于中立观望的态度。套用固定句式来讲，就是“前提是你得先能找到”。而找到外星人会是一件极为困难的事。</p>
+<p>这是因为宇宙中的智慧生物太少么？不，宇宙中适宜产生智慧生物的星球数不胜数。只可惜，绝大多数智慧生物都支撑不到发现外星人，或者被外星人发现，就已经崩塌了。</p>
+<p>这种学说又称为大滤波器理论，是指只有极少数智慧生物能突破“大滤波器”，达成寻找外星人的成就。</p>
+<p>那么，这个大滤波器，可能是什么呢？</p>
+<p>我的看法是，人类面前的大滤波器，正是人类构建的，体系无比复杂的现代社会。现代社会的组成令人眩目：我们的生活依赖于数百万种人造制品，每个人接触的信息和思想都不相同，数以亿计的组织和个人在为了利益与周边互动。随之产生的结果是，任何一个方向上的扰动都可能产生一系列连锁反应。一些波及全球的破坏，例如恶性传染病、小行星撞击、冰川时代、核战争等，有可能使人类永久失去大规模工业生产的根基和尖端科研能力，最终让人类丧失与外星人沟通的可能。其他所有的智慧生物，都会经历类似的境况。除非能顺利破解这样的难题（比如发展星际移民），否则大家都只能被大滤波器挡住，在时空的长河中孤独地逝去。</p>
+<p>[1] 图片来源 <a target="_blank" rel="noopener" href="http://www.biomathdynamics.com/">http://www.biomathdynamics.com/</a></p>
+<p>[2] 三体人生活的星系有三颗恒星，再加上三体人生活的行星，严格来说是“四体问题”。</p>
+<p>[3] 图片来源 <a target="_blank" rel="noopener" href="http://anime-music.info/">http://anime-music.info/</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/science/" rel="tag"># science</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/03/18/database-isolation-level/" rel="prev" title="数据库的隔离等级">
+      <i class="fa fa-chevron-left"></i> 数据库的隔离等级
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/04/16/http-put-vs-post/" rel="next" title="HTTP PUT 与 POST 的区别">
+      HTTP PUT 与 POST 的区别 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E5%AF%BC%E5%87%BD%E6%95%B0%E5%88%B0%E5%8F%8D%E9%A6%88%E6%9C%BA%E5%88%B6"><span class="nav-number">1.</span> <span class="nav-text">从导函数到反馈机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E9%A6%88%E7%9A%84%E5%A4%8D%E6%9D%82%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">反馈的复杂化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E8%A6%81%E5%9B%9E%E5%A4%8D%EF%BC%9F%E4%B8%8D%E7%94%A8%E5%9B%9E%E5%A4%8D%EF%BC%81"><span class="nav-number">3.</span> <span class="nav-text">不要回复？不用回复！</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Ming Wen"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Ming Wen</p>
+  <div class="site-description" itemprop="description">Knowledge for action</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">94</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/bitmingw" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;bitmingw" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/bitmingw" title="LinkedIn → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;bitmingw" rel="noopener" target="_blank"><i class="fa fa-fw fa-linkedin"></i>LinkedIn</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/omegaenming/" title="Douban → https:&#x2F;&#x2F;www.douban.com&#x2F;people&#x2F;omegaenming&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Douban</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://feedburner.google.com/fb/a/mailverify?uri=bitmingw/hexo-blog" title="Subscriber → https:&#x2F;&#x2F;feedburner.google.com&#x2F;fb&#x2F;a&#x2F;mailverify?uri&#x3D;bitmingw&#x2F;hexo-blog" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Subscriber</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2014 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ming Wen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://bitmingwblog.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://bitmingw.com/2018/04/07/deep-simplicity/";
+    this.page.identifier = "2018/04/07/deep-simplicity/";
+    this.page.title = "漫谈《深奥的简洁》";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://bitmingwblog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
