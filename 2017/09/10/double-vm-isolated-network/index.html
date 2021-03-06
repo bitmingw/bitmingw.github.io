@@ -28,28 +28,28 @@
 <meta property="og:site_name" content="Ming&#39;s Blog">
 <meta property="og:description" content="本文将以 VirtualBox + ubuntu + tor 为例，详细讲解搭建双虚拟机隔离上网环境的方法。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/virtualbox-nat-network.png">
-<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/virtualbox-nat-network-config.png">
-<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/virtualbox-host-only-network.png">
-<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/virtualbox-host-only-network-config-adapter.png">
-<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/virtualbox-host-only-network-config-dhcp.png">
-<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-config-adapter-1.png">
-<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-config-adapter-2.png">
-<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-install-config-primary-nic.png">
-<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-network-card.png">
-<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-edit-nat-connection.png">
-<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-edit-host-only-connection.png">
-<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tclient-config-adapter-1.png">
-<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tclient-edit-host-only-connection.png">
-<meta property="og:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tclient-edit-proxy-setting.png">
+<meta property="og:image" content="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/virtualbox-nat-network.png">
+<meta property="og:image" content="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/virtualbox-nat-network-config.png">
+<meta property="og:image" content="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/virtualbox-host-only-network.png">
+<meta property="og:image" content="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/virtualbox-host-only-network-config-adapter.png">
+<meta property="og:image" content="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/virtualbox-host-only-network-config-dhcp.png">
+<meta property="og:image" content="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/tserver-config-adapter-1.png">
+<meta property="og:image" content="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/tserver-config-adapter-2.png">
+<meta property="og:image" content="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/tserver-install-config-primary-nic.png">
+<meta property="og:image" content="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/tserver-network-card.png">
+<meta property="og:image" content="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/tserver-edit-nat-connection.png">
+<meta property="og:image" content="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/tserver-edit-host-only-connection.png">
+<meta property="og:image" content="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/tclient-config-adapter-1.png">
+<meta property="og:image" content="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/tclient-edit-host-only-connection.png">
+<meta property="og:image" content="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/tclient-edit-proxy-setting.png">
 <meta property="article:published_time" content="2017-09-10T07:00:00.000Z">
-<meta property="article:modified_time" content="2017-09-30T23:44:15.935Z">
+<meta property="article:modified_time" content="2021-03-06T04:28:00.554Z">
 <meta property="article:author" content="Ming Wen">
 <meta property="article:tag" content="network">
 <meta property="article:tag" content="firewall">
 <meta property="article:tag" content="proxy">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/virtualbox-nat-network.png">
+<meta name="twitter:image" content="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/virtualbox-nat-network.png">
 
 <link rel="canonical" href="https://bitmingw.com/2017/09/10/double-vm-isolated-network/">
 
@@ -248,7 +248,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-09-30 16:44:15" itemprop="dateModified" datetime="2017-09-30T16:44:15-07:00">2017-09-30</time>
+                <time title="Modified: 2021-03-05 20:28:00" itemprop="dateModified" datetime="2021-03-05T20:28:00-08:00">2021-03-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -299,59 +299,59 @@
 <h2 id="配置-VirtualBox-网络环境"><a href="#配置-VirtualBox-网络环境" class="headerlink" title="配置 VirtualBox 网络环境"></a>配置 VirtualBox 网络环境</h2><p>为了在 host 中搭建网络环境，需要在 VirtualBox 中修改如下配置。</p>
 <p>打开 VirtualBox -&gt; File -&gt; Preferences -&gt; Network</p>
 <div style="text-align: center">
-    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/virtualbox-nat-network.png">
+    <img src="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/virtualbox-nat-network.png">
     <p>创建 NAT Network</p>
 </div>
 
 <div style="text-align: center">
-    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/virtualbox-nat-network-config.png">
+    <img src="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/virtualbox-nat-network-config.png">
     <p>配置 NAT Network</p>
 </div>
 
 <div style="text-align: center">
-    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/virtualbox-host-only-network.png">
+    <img src="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/virtualbox-host-only-network.png">
     <p>进入 Host-Only Network 设定</p>
 </div>
 
 <div style="text-align: center">
-    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/virtualbox-host-only-network-config-adapter.png">
+    <img src="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/virtualbox-host-only-network-config-adapter.png">
     <p>修改 Host-Only Network 网络地址</p>
 </div>
 
 <div style="text-align: center">
-    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/virtualbox-host-only-network-config-dhcp.png">
+    <img src="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/virtualbox-host-only-network-config-dhcp.png">
     <p>修改 Host-Only Network DHCP 地址</p>
 </div>
 
 <p>本文中涉及的 IP 地址和端口号均可以改为其他数值，只需要保证各处的修改一致即可。</p>
 <h2 id="安装-server-与-client-虚拟机"><a href="#安装-server-与-client-虚拟机" class="headerlink" title="安装 server 与 client 虚拟机"></a>安装 server 与 client 虚拟机</h2><p>我们在 VirtualBox 中创建两个新的虚拟机，分别命名为 <code>server</code> 和 <code>client</code>（或者任何你喜欢的名字）。在 server 的配置选项卡中启用 NAT Network 和 Host-Only Network 两个网络适配器，而在 client 中只启用 <strong>NAT Network</strong> 一个适配器。待配置完成后，分别安装这两个系统。</p>
 <div style="text-align: center">
-    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-config-adapter-1.png">
+    <img src="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/tserver-config-adapter-1.png">
 </div>
 
 <div style="text-align: center">
-    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-config-adapter-2.png">
+    <img src="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/tserver-config-adapter-2.png">
 </div>
 
 <p>在安装 server 时，可能会出现需要选择主网卡的情况，此时请选取 NAT Network 对应的网卡。</p>
 <div style="text-align: center">
-    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-install-config-primary-nic.png">
+    <img src="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/tserver-install-config-primary-nic.png">
 </div>
 
 <p>两个系统分别安装完毕后，进入下一节。</p>
 <h2 id="在-server-中配置网卡"><a href="#在-server-中配置网卡" class="headerlink" title="在 server 中配置网卡"></a>在 server 中配置网卡</h2><p>我们的 server 有两块网卡，<code>enp0s3</code> 与 NAT Network 相连，<code>enp0s8</code> 与 Host-Only Network 相连。尽管 VirtualBox 为上述两个网络提供了自动分配 IP 地址的 DHCP 服务器，但为了保证 client 总能找到 server，需要为 server 分配固定的 IP 地址。修改 IP 地址的方法有多种，既可以用 <code>ip</code> 指令，也可以直接修改 <code>/etc/network/interfaces</code> 文件，还可以使用图形用户界面。在这里使用最简单的图形界面方式进行讲解。</p>
 <div style="text-align: center">
-    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-network-card.png">
+    <img src="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/tserver-network-card.png">
     <p>进入系统设置 Network 选项卡</p>
 </div>
 
 <div style="text-align: center">
-    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-edit-nat-connection.png">
+    <img src="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/tserver-edit-nat-connection.png">
     <p>修改 NAT Network 设定</p>
 </div>
 
 <div style="text-align: center">
-    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tserver-edit-host-only-connection.png">
+    <img src="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/tserver-edit-host-only-connection.png">
     <p>修改 Host-Only Network 设定，其中 Gateway 空着不填</p>
 </div>
 
@@ -382,17 +382,17 @@
 <p>意思是，除了访问 localhost 以外，其他流量会经过 socks 5 协议转发到 192.168.56.101:9050 端口上。随后，这些流量会进一步被 tor 监听和转发，从而实现隐匿的目的。</p>
 <h2 id="重定向-client-流量"><a href="#重定向-client-流量" class="headerlink" title="重定向 client 流量"></a>重定向 client 流量</h2><p>我们已经配置好了 client 的转发规则，但现在 client 使用的依旧是 NAT Network，它与 server 的单向连接还没有打通。现在请关闭 client 虚拟机，在 VirtualBox 中把 client 的网络适配器改为 <strong>Host-Only Network</strong>，如下图所示。</p>
 <div style="text-align: center">
-    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tclient-config-adapter-1.png">
+    <img src="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/tclient-config-adapter-1.png">
 </div>
 
 <p>重新启动 client 虚拟机，我们还需要为它分配固定的 IP 地址，并指定全局代理。</p>
 <div style="text-align: center">
-    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tclient-edit-host-only-connection.png">
+    <img src="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/tclient-edit-host-only-connection.png">
 </div>
 
 <p>由于 privoxy 默认监听 localhost 的 8118 端口，我们可以这样设置系统的全局代理：</p>
 <div style="text-align: center">
-    <img src="https://bitmingw.github.io/assets/2017-09-10-double-vm-isolated-network/tclient-edit-proxy-setting.png">
+    <img src="https://bitmingw.com/assets/2017-09-10-double-vm-isolated-network/tclient-edit-proxy-setting.png">
 </div>
 
 <p>大功告成！</p>

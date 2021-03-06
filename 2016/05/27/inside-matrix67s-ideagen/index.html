@@ -28,17 +28,17 @@
 <meta property="og:site_name" content="Ming&#39;s Blog">
 <meta property="og:description" content="我相信现在同时喜欢读博客并且喜欢数学的人已经不多了。如果你恰好在这个圈子里面，你或许听说过 matrix67 这个人。他的博客 The Aha Moments 用简单易懂的语言讲述了许多有趣的数学问题。你或许不知，matrix67 还开发了一个叫 ideagen 的神秘板块，专门用来启发思维。这个 idea generator 的工作机制十分简单，每当你刷新页面的时候，它就会返回一个新的短语。只要">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://bitmingw.github.io/assets/2016-05-27-inside-matrix67s-ideagen/adj.png">
-<meta property="og:image" content="https://bitmingw.github.io/assets/2016-05-27-inside-matrix67s-ideagen/n.png">
-<meta property="og:image" content="https://bitmingw.github.io/assets/2016-05-27-inside-matrix67s-ideagen/adj_sim.png">
-<meta property="og:image" content="https://bitmingw.github.io/assets/2016-05-27-inside-matrix67s-ideagen/n_sim.png">
+<meta property="og:image" content="https://bitmingw.com/assets/2016-05-27-inside-matrix67s-ideagen/adj.png">
+<meta property="og:image" content="https://bitmingw.com/assets/2016-05-27-inside-matrix67s-ideagen/n.png">
+<meta property="og:image" content="https://bitmingw.com/assets/2016-05-27-inside-matrix67s-ideagen/adj_sim.png">
+<meta property="og:image" content="https://bitmingw.com/assets/2016-05-27-inside-matrix67s-ideagen/n_sim.png">
 <meta property="article:published_time" content="2016-05-27T07:00:00.000Z">
-<meta property="article:modified_time" content="2017-07-08T16:39:18.305Z">
+<meta property="article:modified_time" content="2021-03-06T04:25:23.011Z">
 <meta property="article:author" content="Ming Wen">
 <meta property="article:tag" content="math">
 <meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://bitmingw.github.io/assets/2016-05-27-inside-matrix67s-ideagen/adj.png">
+<meta name="twitter:image" content="https://bitmingw.com/assets/2016-05-27-inside-matrix67s-ideagen/adj.png">
 
 <link rel="canonical" href="https://bitmingw.com/2016/05/27/inside-matrix67s-ideagen/">
 
@@ -237,7 +237,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-08 09:39:18" itemprop="dateModified" datetime="2017-07-08T09:39:18-07:00">2017-07-08</time>
+                <time title="Modified: 2021-03-05 20:25:23" itemprop="dateModified" datetime="2021-03-05T20:25:23-08:00">2021-03-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -293,11 +293,11 @@
 <p>确定思路之后，实现整个实验并不困难。Python 的 <code>urllib</code> 提供了简单的接口用于发送 HTTP request 并查看 response. <code>Beautiful Soup</code> 提供了 HTML DOM 的解析功能，只需要一行代码即可直接定位这个短语。感谢 matrix67 使用了 UTF-8 而不是蛋疼的 GB2312, 让 Python3 可以毫无压力地解码字节串。经过 AWS 主机两天漫长的运行，我终于抓取了一百万个样本。其形容词和名词部分出现的频率分布直方图分别如同所示。</p>
 <br />
 <div style="text-align: center">
-    <img src="https://bitmingw.github.io/assets/2016-05-27-inside-matrix67s-ideagen/adj.png">
+    <img src="https://bitmingw.com/assets/2016-05-27-inside-matrix67s-ideagen/adj.png">
 </div>
 <br />
 <div style="text-align: center">
-    <img src="https://bitmingw.github.io/assets/2016-05-27-inside-matrix67s-ideagen/n.png">
+    <img src="https://bitmingw.com/assets/2016-05-27-inside-matrix67s-ideagen/n.png">
 </div>
 <br />
 
@@ -305,11 +305,11 @@
 <p>为了进一步验证上述假设，我计算了抓取的形容词和名词个数，共发现了 967 个不同的形容词和 17834 个不同的名词。使用这些词组，按照随机抽样和随机组合的方式仿真了一百万次请求，所得的直方图如下所示。</p>
 <br />
 <div style="text-align: center">
-    <img src="https://bitmingw.github.io/assets/2016-05-27-inside-matrix67s-ideagen/adj_sim.png">
+    <img src="https://bitmingw.com/assets/2016-05-27-inside-matrix67s-ideagen/adj_sim.png">
 </div>
 <br />
 <div style="text-align: center">
-    <img src="https://bitmingw.github.io/assets/2016-05-27-inside-matrix67s-ideagen/n_sim.png">
+    <img src="https://bitmingw.com/assets/2016-05-27-inside-matrix67s-ideagen/n_sim.png">
 </div>
 <br />
 

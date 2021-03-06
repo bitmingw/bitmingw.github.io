@@ -28,14 +28,14 @@
 <meta property="og:site_name" content="Ming&#39;s Blog">
 <meta property="og:description" content="新的改变这是本博客改用 hexo 引擎和更换主题样式之后的第三次重大更新。现在整个站点 bitmingw.com 以及其引用的所有资源已经强制使用了 HTTPS 加密传输。即使用户最初使用不安全的 HTTP 协议，也会被 301 重定向为 HTTPS 协议。             文章的后续部分会详细讲解本站点 HTTPS 通讯的设计与实现，供各位博主参考。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://bitmingw.github.io/assets/2016-09-14-now-support-https/certificate.png">
+<meta property="og:image" content="https://bitmingw.com/assets/2016-09-14-now-support-https/certificate.png">
 <meta property="article:published_time" content="2016-09-14T07:00:00.000Z">
-<meta property="article:modified_time" content="2017-07-08T16:39:18.305Z">
+<meta property="article:modified_time" content="2021-03-06T04:25:54.318Z">
 <meta property="article:author" content="Ming Wen">
 <meta property="article:tag" content="security">
 <meta property="article:tag" content="blog">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://bitmingw.github.io/assets/2016-09-14-now-support-https/certificate.png">
+<meta name="twitter:image" content="https://bitmingw.com/assets/2016-09-14-now-support-https/certificate.png">
 
 <link rel="canonical" href="https://bitmingw.com/2016/09/14/now-support-https/">
 
@@ -234,7 +234,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-08 09:39:18" itemprop="dateModified" datetime="2017-07-08T09:39:18-07:00">2017-07-08</time>
+                <time title="Modified: 2021-03-05 20:25:54" itemprop="dateModified" datetime="2021-03-05T20:25:54-08:00">2021-03-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -275,7 +275,7 @@
 <br />
 
 <div style="text-align: center">
-    <img src="https://bitmingw.github.io/assets/2016-09-14-now-support-https/certificate.png">
+    <img src="https://bitmingw.com/assets/2016-09-14-now-support-https/certificate.png">
 </div>
 
 <br />
@@ -319,7 +319,7 @@
 
 <br />
 
-<h1 id="不足之处"><a href="#不足之处" class="headerlink" title="不足之处"></a>不足之处</h1><p>在使用 HTTPS 的服务器上部署 301 跳转是业界的常规做法。但这不幸给 CA 证书的自动化更新制造了一点小小的困难。出于 bootstrap 等方面的考虑，CA 在验证服务器对域名的控制权时需要使用 HTTP 协议，301 跳转将会导致验证失败。因此每次更新证书时都要先修改 nginx 配置，重启服务，使用 <code>sudo letsencrypt renew --agree-tos</code> 更新，然后把配置改回去，最后再次重启服务。这比单纯执行 renew 指令复杂了很多。虽说 shell + <code>crontab</code> + <code>sed</code>/<code>awk</code> 还是可以实现全自动证书更新的，但实现起来就略微复杂了。 </p>
+<h1 id="不足之处"><a href="#不足之处" class="headerlink" title="不足之处"></a>不足之处</h1><p>在使用 HTTPS 的服务器上部署 301 跳转是业界的常规做法。但这不幸给 CA 证书的自动化更新制造了一点小小的困难。出于 bootstrap 等方面的考虑，CA 在验证服务器对域名的控制权时需要使用 HTTP 协议，301 跳转将会导致验证失败。因此每次更新证书时都要先修改 nginx 配置，重启服务，使用 <code>sudo letsencrypt renew --agree-tos</code> 更新，然后把配置改回去，最后再次重启服务。这比单纯执行 renew 指令复杂了很多。虽说 shell + <code>crontab</code> + <code>sed</code>/<code>awk</code> 还是可以实现全自动证书更新的，但实现起来就略微复杂了。</p>
 
     </div>
 

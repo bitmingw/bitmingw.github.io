@@ -28,14 +28,14 @@
 <meta property="og:site_name" content="Ming&#39;s Blog">
 <meta property="og:description" content="有的时候就是会遇到这么奇葩的情况。虽然 git 在版本控制软件中独占鳌头，但学校的老师还是要求使用更加古老的工具，比如在 PhD 圈子中流传很广的 subversion (svn). 我花了几个小时简单学习了 svn, 如果有 git 的基础，掌握 svn 一点儿都不困难。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://bitmingw.github.io/assets/2015-02-03-svn-for-git-users/local-remote-git.png">
-<meta property="og:image" content="https://bitmingw.github.io/assets/2015-02-03-svn-for-git-users/local-remote-svn2.png">
+<meta property="og:image" content="https://bitmingw.com/assets/2015-02-03-svn-for-git-users/local-remote-git.png">
+<meta property="og:image" content="https://bitmingw.com/assets/2015-02-03-svn-for-git-users/local-remote-svn2.png">
 <meta property="article:published_time" content="2015-02-03T08:00:00.000Z">
-<meta property="article:modified_time" content="2017-07-08T16:39:18.305Z">
+<meta property="article:modified_time" content="2021-03-06T04:24:39.565Z">
 <meta property="article:author" content="Ming Wen">
 <meta property="article:tag" content="programming">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://bitmingw.github.io/assets/2015-02-03-svn-for-git-users/local-remote-git.png">
+<meta name="twitter:image" content="https://bitmingw.com/assets/2015-02-03-svn-for-git-users/local-remote-git.png">
 
 <link rel="canonical" href="https://bitmingw.com/2015/02/03/svn-for-git-users/">
 
@@ -234,7 +234,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-08 09:39:18" itemprop="dateModified" datetime="2017-07-08T09:39:18-07:00">2017-07-08</time>
+                <time title="Modified: 2021-03-05 20:24:39" itemprop="dateModified" datetime="2021-03-05T20:24:39-08:00">2021-03-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -296,12 +296,12 @@
 
 <h3 id="svn-的基本操作"><a href="#svn-的基本操作" class="headerlink" title="svn 的基本操作"></a>svn 的基本操作</h3><p>先来回顾一下 git 的基本操作</p>
 <div style="text-align: center">
-    <img src="https://bitmingw.github.io/assets/2015-02-03-svn-for-git-users/local-remote-git.png">
+    <img src="https://bitmingw.com/assets/2015-02-03-svn-for-git-users/local-remote-git.png">
 </div>
 
 <p>再对比 svn 的相关操作</p>
 <div style="text-align: center">
-    <img src="https://bitmingw.github.io/assets/2015-02-03-svn-for-git-users/local-remote-svn2.png">
+    <img src="https://bitmingw.com/assets/2015-02-03-svn-for-git-users/local-remote-svn2.png">
 </div>
 
 <p>他们的区别主要是 local repo 引起的。在 svn 中，没有 local repo 的概念，commit 操作直接将修改提交至 remote repo, 也就是说 svn commit = git commit + git push.</p>
