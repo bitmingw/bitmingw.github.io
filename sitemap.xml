@@ -401,13 +401,6 @@
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2017/03/12/spacemacs-evil-mode/</loc>
-    
-    <lastmod>2017-07-08</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://bitmingw.com/2017/03/02/spacemacs-install-configuration/</loc>
     
     <lastmod>2017-07-08</lastmod>
@@ -415,7 +408,21 @@
   </url>
   
   <url>
+    <loc>https://bitmingw.com/2017/03/12/spacemacs-evil-mode/</loc>
+    
+    <lastmod>2017-07-08</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://bitmingw.com/2017/03/19/lovelive-sif-free-play-guide/</loc>
+    
+    <lastmod>2017-07-08</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://bitmingw.com/2017/04/02/archlinux-parabola-install-gui/</loc>
     
     <lastmod>2017-07-08</lastmod>
     
@@ -443,13 +450,6 @@
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2017/04/02/archlinux-parabola-install-gui/</loc>
-    
-    <lastmod>2017-07-08</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://bitmingw.com/2017/05/16/compile-cpp-project-in-linux/</loc>
     
     <lastmod>2017-07-08</lastmod>
@@ -464,20 +464,6 @@
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2012/06/29/life-in-2nd-semester/</loc>
-    
-    <lastmod>2017-07-08</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://bitmingw.com/2014/02/20/gre-prep-and-exam/</loc>
-    
-    <lastmod>2017-07-08</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://bitmingw.com/2014/06/16/a-second-talk-about-gre/</loc>
     
     <lastmod>2017-07-08</lastmod>
@@ -485,7 +471,21 @@
   </url>
   
   <url>
+    <loc>https://bitmingw.com/2012/06/29/life-in-2nd-semester/</loc>
+    
+    <lastmod>2017-07-08</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://bitmingw.com/2014/07/01/life-in-6th-semester/</loc>
+    
+    <lastmod>2017-07-08</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://bitmingw.com/2014/02/20/gre-prep-and-exam/</loc>
     
     <lastmod>2017-07-08</lastmod>
     
@@ -520,7 +520,7 @@
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2015/03/21/general-makefile/</loc>
+    <loc>https://bitmingw.com/2015/05/12/install-ftp-server/</loc>
     
     <lastmod>2017-07-08</lastmod>
     
@@ -534,14 +534,7 @@
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2015/05/12/install-ftp-server/</loc>
-    
-    <lastmod>2017-07-08</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://bitmingw.com/2015/04/03/install-shadowsocks-server/</loc>
+    <loc>https://bitmingw.com/2015/03/21/general-makefile/</loc>
     
     <lastmod>2017-07-08</lastmod>
     
@@ -555,7 +548,7 @@
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2015/07/21/which-java-home/</loc>
+    <loc>https://bitmingw.com/2015/04/03/install-shadowsocks-server/</loc>
     
     <lastmod>2017-07-08</lastmod>
     
@@ -569,7 +562,7 @@
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2015/09/27/what-is-i-to-the-power-of-i/</loc>
+    <loc>https://bitmingw.com/2015/07/21/which-java-home/</loc>
     
     <lastmod>2017-07-08</lastmod>
     
@@ -583,7 +576,7 @@
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2016/01/13/exploit-python-iterator/</loc>
+    <loc>https://bitmingw.com/2015/09/27/what-is-i-to-the-power-of-i/</loc>
     
     <lastmod>2017-07-08</lastmod>
     
@@ -597,6 +590,13 @@
   </url>
   
   <url>
+    <loc>https://bitmingw.com/2016/01/13/exploit-python-iterator/</loc>
+    
+    <lastmod>2017-07-08</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://bitmingw.com/2016/06/19/the-multi-choice-paradox/</loc>
     
     <lastmod>2017-07-08</lastmod>
@@ -604,7 +604,7 @@
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2016/06/13/three-questions-of-programming/</loc>
+    <loc>https://bitmingw.com/2016/07/16/partial-function/</loc>
     
     <lastmod>2017-07-08</lastmod>
     
@@ -618,7 +618,7 @@
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2016/07/16/partial-function/</loc>
+    <loc>https://bitmingw.com/2016/06/13/three-questions-of-programming/</loc>
     
     <lastmod>2017-07-08</lastmod>
     
@@ -676,428 +676,428 @@
 
   <url>
     <loc>https://bitmingw.com/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   
   <url>
-    <loc>https://bitmingw.com/tags/memo/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <loc>https://bitmingw.com/tags/GRE/</loc>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://bitmingw.com/tags/GRE/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <loc>https://bitmingw.com/tags/memo/</loc>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/C/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/programming/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/planning/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/network/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/debug/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/firewall/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/TeX/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/business/</loc>
-    <lastmod>2021-04-11</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bitmingw.com/tags/system/</loc>
-    <lastmod>2021-04-11</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bitmingw.com/tags/math/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/innovation/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://bitmingw.com/tags/system/</loc>
+    <lastmod>2021-04-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://bitmingw.com/tags/math/</loc>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/security/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/discussion/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/Python/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/logic/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/blog/</loc>
-    <lastmod>2021-04-11</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bitmingw.com/tags/ACG/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/algorithm/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://bitmingw.com/tags/ACG/</loc>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/history/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/writing/</loc>
-    <lastmod>2021-04-11</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bitmingw.com/tags/web/</loc>
-    <lastmod>2021-04-11</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bitmingw.com/tags/Linux/</loc>
-    <lastmod>2021-04-11</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bitmingw.com/tags/spacemacs/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/git/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://bitmingw.com/tags/Linux/</loc>
+    <lastmod>2021-04-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://bitmingw.com/tags/spacemacs/</loc>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/rhythm-game/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/shadowsocks/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/proxy/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://bitmingw.com/tags/web/</loc>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/tmux/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/ssh/</loc>
-    <lastmod>2021-04-11</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bitmingw.com/tags/C/</loc>
-    <lastmod>2021-04-11</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bitmingw.com/tags/compile/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/GitHub/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/GTD/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/management/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://bitmingw.com/tags/C/</loc>
+    <lastmod>2021-04-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://bitmingw.com/tags/compile/</loc>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/fail2ban/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/nginx/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/HHKB/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/tool/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/java/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/functional-programming/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/AWS/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/cloud/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/storage/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/blockchain/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/database/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/science/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/http/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/intellij/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/productivity/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/photography/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/religion/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/quantum-computing/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/ubuntu/</loc>
-    <lastmod>2021-04-11</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bitmingw.com/tags/ESXi/</loc>
-    <lastmod>2021-04-11</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bitmingw.com/tags/VMware/</loc>
-    <lastmod>2021-04-11</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bitmingw.com/tags/vSphere/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/finance/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://bitmingw.com/tags/ESXi/</loc>
+    <lastmod>2021-04-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://bitmingw.com/tags/VMware/</loc>
+    <lastmod>2021-04-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://bitmingw.com/tags/vSphere/</loc>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/tags/sql/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -1105,50 +1105,50 @@
 
   
   <url>
-    <loc>https://bitmingw.com/categories/life/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <loc>https://bitmingw.com/categories/tutorial/</loc>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://bitmingw.com/categories/tutorial/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <loc>https://bitmingw.com/categories/life/</loc>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/categories/idea/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/categories/info/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/categories/plan/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/categories/research/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://bitmingw.com/categories/work/</loc>
-    <lastmod>2021-04-11</lastmod>
+    <lastmod>2021-04-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
