@@ -1737,7 +1737,7 @@
 
       
           <p>There is a tricky problem about <code>JAVA_HOME</code>. When I try to install <a href="http://developer.android.com/tools/studio/index.html" title="" target="">android studio</a> on my Linux, the installer reports the following message:</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tools.jar is not in android studio classpath. Please ensure JAVA_HOME points to JDK rather than JRE.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tools.jar is not in android studio classpath. Please ensure JAVA_HOME points to JDK rather than JRE.</span><br></pre></td></tr></table></figure>
 
 <p>However, JDK has already been installed and I have added the following lines in <code>/etc/profile</code> to export the variables.</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export $JAVA_HOME=/usr/java/jdk1.7.0_79/</span><br><span class="line">export $PATH=$JAVA_HOME/bin:$PATH</span><br></pre></td></tr></table></figure>

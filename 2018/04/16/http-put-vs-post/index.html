@@ -278,12 +278,12 @@
 <li>如果地址 <code>K</code> 之前曾绑定过另一个对象，比如 <code>V0</code>，那么 <code>V0</code> 会被 <code>V</code> 替换。</li>
 </ol>
 <p>举一个简单的例子，假设我的博客后台支持 RESTful API，我可以通过下面的请求发布这篇文章：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PUT https:&#x2F;&#x2F;bitmingw.com&#x2F;2018&#x2F;04&#x2F;16&#x2F;http-put-vs-post HTTP&#x2F;1.1</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    &#x2F;* 文章内容正文 *&#x2F;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PUT https://bitmingw.com/2018/04/16/http-put-vs-post HTTP/1.1</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    /* 文章内容正文 */</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>可以看出，使用 PUT 方法时，客户端需要在 HTTP 请求中明确指定地址 <code>K</code>。</p>
 <p>正如 Java 的例子一样，PUT 方法应当支持幂等性。如果是同一个对象 <code>V</code>，PUT 多次与 PUT 一次返回的结果应该是相同的。客户端可以利用 PUT 的幂等性安全地重试请求，保证客户端的请求至少被服务端处理一次。</p>
 <p>如果把上面发布文章的例子用 HTTP POST 方法重写，它可能会是下面这样：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">POST https:&#x2F;&#x2F;bitmingw.com&#x2F;post-article HTTP&#x2F;1.1</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    &#x2F;* 文章内容正文 *&#x2F;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">POST https://bitmingw.com/post-article HTTP/1.1</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    /* 文章内容正文 */</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>也就是说，地址 <code>K</code> 不是由客户端指定的，而是由服务端生成的。比如，服务端可能会根据日期和文章标题，为本文分配一个地址。</p>
 <p>另外，与 PUT 方法不同，POST 方法是不支持幂等性的。同一个请求被处理两次，应当生成两份对象。换句话说，客户端应该只发送一次 POST 请求，而客户端的请求至多会被服务端处理一次。</p>

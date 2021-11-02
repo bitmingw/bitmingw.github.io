@@ -40,8 +40,8 @@
 <meta property="article:published_time" content="2020-02-12T08:00:00.000Z">
 <meta property="article:modified_time" content="2021-03-06T04:30:12.116Z">
 <meta property="article:author" content="Ming Wen">
-<meta property="article:tag" content="ESXi">
 <meta property="article:tag" content="VMware">
+<meta property="article:tag" content="ESXi">
 <meta property="article:tag" content="vSphere">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://bitmingw.com/assets/2020-02-12-migrate-local-vm-to-esxi/source-vm.png">
@@ -300,13 +300,13 @@
 <br />
 
 <h2 id="Step-2-Upload-and-Convert-VMDK"><a href="#Step-2-Upload-and-Convert-VMDK" class="headerlink" title="Step 2: Upload and Convert VMDK"></a>Step 2: Upload and Convert VMDK</h2><p>When the export finishes, you can use <code>scp</code> to upload the VMDK file to ESXi datastore.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:&#x2F;vmfs&#x2F;volumes&#x2F;datastore] ls</span><br><span class="line">...</span><br><span class="line">Windows-10-64-Enterprise-disk1.vmdk</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@esxi:/vmfs/volumes/datastore] ls</span><br><span class="line">...</span><br><span class="line">Windows-10-64-Enterprise-disk1.vmdk</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
 <p>The VMDK format between ESXi and VMware Workstation / Fusion is different, so the uploaded file can&#39;t be consumed by ESXi directly. There is a command <code>vmkfstools</code> to convert Workstation and Fusion VMDK into ESXi&#39;s format. Let&#39;s rename the uploaded VMDK and do the conversion.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root...] mv Windows-10-64-Enterprise-disk1.vmdk Windows-10-64-Enterprise-disk1.vmdk.fusion</span><br><span class="line">[root...] vmkfstools -i Windows-10-64-Enterprise-disk1.vmdk.fusion Windows-10-64-Enterprise-disk1.vmdk</span><br><span class="line">Destination disk format: VMFS zeroedthick</span><br><span class="line">Cloning disk &#39;Windows-10-64-Enterprise-disk1.vmdk.fusion&#39;...</span><br><span class="line">Clone: 100% done.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root...] mv Windows-10-64-Enterprise-disk1.vmdk Windows-10-64-Enterprise-disk1.vmdk.fusion</span><br><span class="line">[root...] vmkfstools -i Windows-10-64-Enterprise-disk1.vmdk.fusion Windows-10-64-Enterprise-disk1.vmdk</span><br><span class="line">Destination disk format: VMFS zeroedthick</span><br><span class="line">Cloning disk &#x27;Windows-10-64-Enterprise-disk1.vmdk.fusion&#x27;...</span><br><span class="line">Clone: 100% done.</span><br></pre></td></tr></table></figure>
 
 <p>Now you should have the following files in the datastore:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root...] ls</span><br><span class="line">...</span><br><span class="line">Windows-10-64-Enterprise-disk1-flat.vmdk</span><br><span class="line">Windows-10-64-Enterprise-disk1.vmdk</span><br><span class="line">Windows-10-64-Enterprise-disk1.vmdk.fusion</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root...] ls</span><br><span class="line">...</span><br><span class="line">Windows-10-64-Enterprise-disk1-flat.vmdk</span><br><span class="line">Windows-10-64-Enterprise-disk1.vmdk</span><br><span class="line">Windows-10-64-Enterprise-disk1.vmdk.fusion</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
 <p>&quot;Windows-10-64-Enterprise-disk1.vmdk.fusion&quot; is the original VMDK you uploaded. &quot;Windows-10-64-Enterprise-disk1.vmdk&quot; and &quot;Windows-10-64-Enterprise-disk1-flat.vmdk&quot; are the new files generated by <code>vmkfstools</code> command.</p>
 <br />
@@ -354,8 +354,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/ESXi/" rel="tag"># ESXi</a>
               <a href="/tags/VMware/" rel="tag"># VMware</a>
+              <a href="/tags/ESXi/" rel="tag"># ESXi</a>
               <a href="/tags/vSphere/" rel="tag"># vSphere</a>
           </div>
 

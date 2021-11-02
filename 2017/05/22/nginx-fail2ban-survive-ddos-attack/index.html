@@ -286,19 +286,19 @@
 
 <p>Nginx 的每个 zone 记录了一套管理规则。这个规则会在开启了该 zone 的 location 上生效。也就是说，应在“其它设定”下面声明 zone，并在“文件路径映射”那里引用它。</p>
 <p>来看两个 zone 的声明的例子。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">limit_req_zone $binary_remote_addr zone&#x3D;perip:10m rate&#x3D;30r&#x2F;m;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">limit_req_zone $binary_remote_addr zone=perip:10m rate=30r/m;</span><br></pre></td></tr></table></figure>
 
 <p>第一个例子中，<code>limit_req_zone</code> 表明这条语句声明一个限流 zone。<code>$binary_remote_addr</code> 是 Nginx 内置的变量，用来表示客户端的 IP 地址。它决定了这个 zone 会以客户端 IP 作为控制条件。<code>perip</code> 是 zone 的名字。冒号后的 <code>10m</code> 表示这个 zone 最大可占用的内存空间。zone 要存储包括 IP 地址在内的客户端状态信息。根据 <a href="http://nginx.org/en/docs/http/ngx_http_limit_req_module.html" title="" target="">官方文档</a>，状态信息在 32 位机上占用 64 字节，而在 64 位机上占用 128 字节。对我的 64 位服务器而言，10 MB 的内存理论上支持 8 万个并发连接，是绰绰有余的。最后 <code>30r/m</code> 规定，每个 IP 地址的平均请求速度不得大于每分钟 30 次。因为不支持小数的缘故，这里不能写作 <code>0.5r/s</code>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">limit_req_zone $server_name zone&#x3D;perserver:10m rate&#x3D;100r&#x2F;s;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">limit_req_zone $server_name zone=perserver:10m rate=100r/s;</span><br></pre></td></tr></table></figure>
 
 <p>第二个例子使用了内置变量 <code>$server_name</code>，使得这个 zone 作用于 Nginx 自己。它的意思是，当某个逻辑服务器的平均请求速度大于每秒 100 次时，将不再受理新的请求。</p>
 <p>在 location 内引用一个 zone，请参考下面的例子。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">limit_req zone&#x3D;perip burst&#x3D;5 nodelay;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">limit_req zone=perip burst=5 nodelay;</span><br></pre></td></tr></table></figure>
 
 <p>这条指令为当前的 location 启用 <code>perip</code> zone。尽管 <code>perip</code> 限制了平均请求速度，Nginx 依旧允许客户端并发创建 5 个连接，以适应现代浏览器的需要。过载后，开启了 <code>nodelay</code> 的 Nginx 将立即向客户端返回错误码。如果没有 <code>nodelay</code> 选项，Nginx 会故意延迟响应客户端的请求，以便将其响应请求的平均速度拉低到限定值以下。因为在这种情况下，服务器仍然需要消耗内存记录尚未响应的请求，所以对付 DDOS 攻击一定要开启 <code>nodelay</code> 选项。</p>
 <p>在声明 zone 的位置，同时可以自定义返回的状态码。默认返回的状态码是 503 服务暂时不可用。我建议通过 <code>limit_req_status 444;</code> 将它替换成 444 无回应断开连接。444 是一个由 Nginx 引入的非标准 HTTP 状态码，它从字面上将拒绝服务的责任从服务器端 (5xx) 转移到客户端 (4xx)，更加真实地反映了客观情况。</p>
 <p>如果 Nginx 服务器流量超限，我们可以在 error 日志中找到这样的记录：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">... limiting requests, excess:..., client:..., server:..., request:..., host:...</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">... limiting requests, excess:..., client:..., server:..., request:..., host:...</span><br></pre></td></tr></table></figure>
 
 <p>Nginx 的限流仅仅可以停止响应服务，但客户端依然能不断地发送 TCP 请求建立新的连接。这时需要 fail2ban 上场彻底阻断恶意客户端的魔爪。fail2ban 的工作，就是从监控日志开始的。</p>
 <br />
