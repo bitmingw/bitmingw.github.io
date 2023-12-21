@@ -198,6 +198,304 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://bitmingw.com/2015/07/21/which-java-home/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Ming Wen">
+      <meta itemprop="description" content="Knowledge for action">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ming's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/07/21/which-java-home/" class="post-title-link" itemprop="url">Which JAVA_HOME</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-07-21 00:00:00" itemprop="dateCreated datePublished" datetime="2015-07-21T00:00:00-07:00">2015-07-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-12-16 09:07:03" itemprop="dateModified" datetime="2023-12-16T09:07:03-08:00">2023-12-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/idea/" itemprop="url" rel="index"><span itemprop="name">idea</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/07/21/which-java-home/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/07/21/which-java-home/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>There is a tricky problem about <code>JAVA_HOME</code>. When I try to install <a href="http://developer.android.com/tools/studio/index.html" title="" target="">android studio</a> on my Linux, the installer reports the following message:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tools.jar is not in android studio classpath. Please ensure JAVA_HOME points to JDK rather than JRE.</span><br></pre></td></tr></table></figure>
+
+<p>However, JDK has already been installed and I have added the following lines in <code>/etc/profile</code> to export the variables.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export $JAVA_HOME=/usr/java/jdk1.7.0_79/</span><br><span class="line">export $PATH=$JAVA_HOME/bin:$PATH</span><br></pre></td></tr></table></figure>
+
+<p>Variable <code>JAVA_HOME</code> is pointing to the JDK, but why it is not working on android studio?</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2015/07/21/which-java-home/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://bitmingw.com/2015/06/10/bayes-sop/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Ming Wen">
+      <meta itemprop="description" content="Knowledge for action">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ming's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/06/10/bayes-sop/" class="post-title-link" itemprop="url">四概率贝叶斯问题的解答流程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-06-10 00:00:00" itemprop="dateCreated datePublished" datetime="2015-06-10T00:00:00-07:00">2015-06-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-12-16 09:07:03" itemprop="dateModified" datetime="2023-12-16T09:07:03-08:00">2023-12-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/idea/" itemprop="url" rel="index"><span itemprop="name">idea</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/06/10/bayes-sop/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/06/10/bayes-sop/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>丹尼尔·卡尼曼是著名的心理和经济学家，曾于2002年获诺贝尔经济学奖。他在著作 <a href="http://book.douban.com/subject/10785583/" title="" target="">《思考，快与慢》</a> 中出了这样一道题：</p>
+<blockquote>
+<p>一辆出租车在夜晚肇事之后逃逸，一位目击证人辨认出肇事车辆是蓝色的。已知这座城市 85% 的出租车是绿色的，15% 是蓝色的。警察经过测试，认为目击者在当时可以正确辨认出这两种颜色的概率是 80%, 辨别错误的概率是 20%. 请问，肇事出租车是蓝色的概率是多少？</p>
+</blockquote>
+<p>如果你已经学过了贝叶斯定理，可以花上 5 分钟的时间尝试解答这个问题。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2015/06/10/bayes-sop/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://bitmingw.com/2015/05/29/setup-git-http-proxy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Ming Wen">
+      <meta itemprop="description" content="Knowledge for action">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ming's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/05/29/setup-git-http-proxy/" class="post-title-link" itemprop="url">为git设置HTTPS代理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-05-29 00:00:00" itemprop="dateCreated datePublished" datetime="2015-05-29T00:00:00-07:00">2015-05-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-12-16 09:07:03" itemprop="dateModified" datetime="2023-12-16T09:07:03-08:00">2023-12-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tutorial/" itemprop="url" rel="index"><span itemprop="name">tutorial</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/05/29/setup-git-http-proxy/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/05/29/setup-git-http-proxy/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>距离5月35日还有一周的时间，政府就开始提醒我们这一天的存在了。与 <a href="https://about.gitlab.com/gitlab-com/" title="" target="">GitLab</a> 齐名的免费代码仓库 <a href="https://bitbucket.org/" title="" target="">Bitbucket</a> 不幸躺枪，pull 和 push 的通道都被封锁，取而代之的是这样一条消息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fatal: unable to access xxx: Failed connect to bitbucket.org:443; No error</span><br></pre></td></tr></table></figure>
+
+<p>然而一个程序员绝不能以网络不畅为由停止手中的工作，只要为 git 设置 HTTP/HTTPS 代理，就可以化解上面的问题。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2015/05/29/setup-git-http-proxy/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://bitmingw.com/2015/05/12/install-ftp-server/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -229,7 +527,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-08 09:39:18" itemprop="dateModified" datetime="2017-07-08T09:39:18-07:00">2017-07-08</time>
+                <time title="Modified: 2023-12-16 09:07:03" itemprop="dateModified" datetime="2023-12-16T09:07:03-08:00">2023-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -324,7 +622,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-08 09:39:18" itemprop="dateModified" datetime="2017-07-08T09:39:18-07:00">2017-07-08</time>
+                <time title="Modified: 2023-12-16 09:07:03" itemprop="dateModified" datetime="2023-12-16T09:07:03-08:00">2023-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -419,7 +717,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-08 09:39:18" itemprop="dateModified" datetime="2017-07-08T09:39:18-07:00">2017-07-08</time>
+                <time title="Modified: 2023-12-16 09:07:03" itemprop="dateModified" datetime="2023-12-16T09:07:03-08:00">2023-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -518,7 +816,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-08 09:39:18" itemprop="dateModified" datetime="2017-07-08T09:39:18-07:00">2017-07-08</time>
+                <time title="Modified: 2023-12-16 09:07:03" itemprop="dateModified" datetime="2023-12-16T09:07:03-08:00">2023-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -613,7 +911,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-08 09:39:18" itemprop="dateModified" datetime="2017-07-08T09:39:18-07:00">2017-07-08</time>
+                <time title="Modified: 2023-12-16 09:07:03" itemprop="dateModified" datetime="2023-12-16T09:07:03-08:00">2023-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -713,7 +1011,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-05 20:24:39" itemprop="dateModified" datetime="2021-03-05T20:24:39-08:00">2021-03-05</time>
+                <time title="Modified: 2023-12-16 09:07:03" itemprop="dateModified" datetime="2023-12-16T09:07:03-08:00">2023-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -808,7 +1106,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-05 20:24:24" itemprop="dateModified" datetime="2021-03-05T20:24:24-08:00">2021-03-05</time>
+                <time title="Modified: 2023-12-16 09:07:03" itemprop="dateModified" datetime="2023-12-16T09:07:03-08:00">2023-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -903,7 +1201,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-08 09:39:18" itemprop="dateModified" datetime="2017-07-08T09:39:18-07:00">2017-07-08</time>
+                <time title="Modified: 2023-12-16 09:07:03" itemprop="dateModified" datetime="2023-12-16T09:07:03-08:00">2023-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -999,7 +1297,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-05 20:24:08" itemprop="dateModified" datetime="2021-03-05T20:24:08-08:00">2021-03-05</time>
+                <time title="Modified: 2023-12-16 09:07:03" itemprop="dateModified" datetime="2023-12-16T09:07:03-08:00">2023-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1102,7 +1400,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-08 09:39:18" itemprop="dateModified" datetime="2017-07-08T09:39:18-07:00">2017-07-08</time>
+                <time title="Modified: 2023-12-16 09:07:03" itemprop="dateModified" datetime="2023-12-16T09:07:03-08:00">2023-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1200,7 +1498,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-08 09:39:18" itemprop="dateModified" datetime="2017-07-08T09:39:18-07:00">2017-07-08</time>
+                <time title="Modified: 2023-12-16 09:07:03" itemprop="dateModified" datetime="2023-12-16T09:07:03-08:00">2023-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1308,7 +1606,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-08 09:39:18" itemprop="dateModified" datetime="2017-07-08T09:39:18-07:00">2017-07-08</time>
+                <time title="Modified: 2023-12-16 09:07:03" itemprop="dateModified" datetime="2023-12-16T09:07:03-08:00">2023-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1406,7 +1704,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-08 09:39:18" itemprop="dateModified" datetime="2017-07-08T09:39:18-07:00">2017-07-08</time>
+                <time title="Modified: 2023-12-16 09:07:03" itemprop="dateModified" datetime="2023-12-16T09:07:03-08:00">2023-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1514,7 +1812,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-08 09:39:18" itemprop="dateModified" datetime="2017-07-08T09:39:18-07:00">2017-07-08</time>
+                <time title="Modified: 2023-12-16 09:07:03" itemprop="dateModified" datetime="2023-12-16T09:07:03-08:00">2023-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1609,7 +1907,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-08 09:39:18" itemprop="dateModified" datetime="2017-07-08T09:39:18-07:00">2017-07-08</time>
+                <time title="Modified: 2023-12-16 09:07:03" itemprop="dateModified" datetime="2023-12-16T09:07:03-08:00">2023-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1704,7 +2002,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-08 09:39:18" itemprop="dateModified" datetime="2017-07-08T09:39:18-07:00">2017-07-08</time>
+                <time title="Modified: 2023-12-16 09:07:03" itemprop="dateModified" datetime="2023-12-16T09:07:03-08:00">2023-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1799,7 +2097,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2017-07-08 09:39:18" itemprop="dateModified" datetime="2017-07-08T09:39:18-07:00">2017-07-08</time>
+                <time title="Modified: 2023-12-16 09:07:03" itemprop="dateModified" datetime="2023-12-16T09:07:03-08:00">2023-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1930,7 +2228,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-count">100</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1984,7 +2282,7 @@
 <div class="copyright">
   
   &copy; 2014 – 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -2049,6 +2347,61 @@
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
