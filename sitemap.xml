@@ -2,6 +2,55 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://bitmingw.com/2017/12/10/aws-s3-personal-cloud-storage/</loc>
+    
+    <lastmod>2024-03-30</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://bitmingw.com/2017/12/22/2017-retrospect/</loc>
+    
+    <lastmod>2024-03-30</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://bitmingw.com/2018/01/28/git-branch-factory-reset/</loc>
+    
+    <lastmod>2024-03-30</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://bitmingw.com/2018/02/05/flight-random-thoughts/</loc>
+    
+    <lastmod>2024-03-30</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://bitmingw.com/2018/02/23/introduction-to-telegram-open-network/</loc>
+    
+    <lastmod>2024-03-30</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://bitmingw.com/2018/03/18/database-isolation-level/</loc>
+    
+    <lastmod>2024-03-30</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://bitmingw.com/2018/04/07/deep-simplicity/</loc>
+    
+    <lastmod>2024-03-30</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://bitmingw.com/2018/04/16/http-put-vs-post/</loc>
     
     <lastmod>2024-03-30</lastmod>
@@ -100,6 +149,13 @@
   </url>
   
   <url>
+    <loc>https://bitmingw.com/2019/12/29/2019-retrospect/</loc>
+    
+    <lastmod>2024-03-30</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://bitmingw.com/2020/02/12/migrate-local-vm-to-esxi/</loc>
     
     <lastmod>2024-03-30</lastmod>
@@ -184,13 +240,6 @@
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2019/12/29/2019-retrospect/</loc>
-    
-    <lastmod>2024-03-30</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://bitmingw.com/2012/06/29/life-in-2nd-semester/</loc>
     
     <lastmod>2024-03-30</lastmod>
@@ -198,14 +247,14 @@
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2013/06/27/life-in-4th-semester/</loc>
+    <loc>https://bitmingw.com/2014/01/14/life-in-5th-semester/</loc>
     
     <lastmod>2024-03-30</lastmod>
     
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2014/01/14/life-in-5th-semester/</loc>
+    <loc>https://bitmingw.com/2013/06/27/life-in-4th-semester/</loc>
     
     <lastmod>2024-03-30</lastmod>
     
@@ -268,14 +317,14 @@
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2015/02/24/latex-tips/</loc>
+    <loc>https://bitmingw.com/2015/02/03/svn-for-git-users/</loc>
     
     <lastmod>2024-03-30</lastmod>
     
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2015/02/03/svn-for-git-users/</loc>
+    <loc>https://bitmingw.com/2015/02/24/latex-tips/</loc>
     
     <lastmod>2024-03-30</lastmod>
     
@@ -359,13 +408,6 @@
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2016/01/13/exploit-python-iterator/</loc>
-    
-    <lastmod>2024-03-30</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://bitmingw.com/2016/01/04/fragile-or-insight/</loc>
     
     <lastmod>2024-03-30</lastmod>
@@ -373,7 +415,7 @@
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2016/05/06/wander-in-gt-ii/</loc>
+    <loc>https://bitmingw.com/2016/01/13/exploit-python-iterator/</loc>
     
     <lastmod>2024-03-30</lastmod>
     
@@ -381,6 +423,13 @@
   
   <url>
     <loc>https://bitmingw.com/2016/02/15/invalid-file-names-in-windows/</loc>
+    
+    <lastmod>2024-03-30</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://bitmingw.com/2016/05/06/wander-in-gt-ii/</loc>
     
     <lastmod>2024-03-30</lastmod>
     
@@ -443,14 +492,14 @@
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2016/09/14/now-support-https/</loc>
+    <loc>https://bitmingw.com/2016/10/12/review-of-a-brief-history-of-human/</loc>
     
     <lastmod>2024-03-30</lastmod>
     
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2016/10/12/review-of-a-brief-history-of-human/</loc>
+    <loc>https://bitmingw.com/2016/09/14/now-support-https/</loc>
     
     <lastmod>2024-03-30</lastmod>
     
@@ -555,14 +604,14 @@
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2017/04/01/git-cherry-pick-reorder-and-delete/</loc>
+    <loc>https://bitmingw.com/2017/04/02/archlinux-parabola-install-gui/</loc>
     
     <lastmod>2024-03-30</lastmod>
     
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2017/04/02/archlinux-parabola-install-gui/</loc>
+    <loc>https://bitmingw.com/2017/04/01/git-cherry-pick-reorder-and-delete/</loc>
     
     <lastmod>2024-03-30</lastmod>
     
@@ -647,55 +696,6 @@
   
   <url>
     <loc>https://bitmingw.com/2017/11/04/java-stream-with-functional-interface/</loc>
-    
-    <lastmod>2024-03-30</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://bitmingw.com/2017/12/10/aws-s3-personal-cloud-storage/</loc>
-    
-    <lastmod>2024-03-30</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://bitmingw.com/2017/12/22/2017-retrospect/</loc>
-    
-    <lastmod>2024-03-30</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://bitmingw.com/2018/01/28/git-branch-factory-reset/</loc>
-    
-    <lastmod>2024-03-30</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://bitmingw.com/2018/02/05/flight-random-thoughts/</loc>
-    
-    <lastmod>2024-03-30</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://bitmingw.com/2018/02/23/introduction-to-telegram-open-network/</loc>
-    
-    <lastmod>2024-03-30</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://bitmingw.com/2018/03/18/database-isolation-level/</loc>
-    
-    <lastmod>2024-03-30</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://bitmingw.com/2018/04/07/deep-simplicity/</loc>
     
     <lastmod>2024-03-30</lastmod>
     
@@ -830,14 +830,14 @@
   </url>
   
   <url>
-    <loc>https://bitmingw.com/tags/Python/</loc>
+    <loc>https://bitmingw.com/tags/discussion/</loc>
     <lastmod>2024-03-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://bitmingw.com/tags/discussion/</loc>
+    <loc>https://bitmingw.com/tags/Python/</loc>
     <lastmod>2024-03-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
