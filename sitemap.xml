@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://bitmingw.com/2024/07/27/13-sentinels-battle-guide/</loc>
+    
+    <lastmod>2024-07-27</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://bitmingw.com/2020/04/26/understand-financial-statements/</loc>
     
     <lastmod>2024-07-27</lastmod>
@@ -86,13 +93,6 @@
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2024/07/27/13-sentinels-battle-guide/</loc>
-    
-    <lastmod>2024-07-27</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://bitmingw.com/2018/02/23/introduction-to-telegram-open-network/</loc>
     
     <lastmod>2024-07-27</lastmod>
@@ -142,14 +142,14 @@
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2018/10/05/hiring-in-georgia-tech/</loc>
+    <loc>https://bitmingw.com/2018/12/30/2018-retrospect/</loc>
     
     <lastmod>2024-07-27</lastmod>
     
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2018/12/30/2018-retrospect/</loc>
+    <loc>https://bitmingw.com/2018/10/05/hiring-in-georgia-tech/</loc>
     
     <lastmod>2024-07-27</lastmod>
     
@@ -198,14 +198,14 @@
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2019/06/09/easy-to-understand-quantum-computing/</loc>
+    <loc>https://bitmingw.com/2019/08/28/ubuntu-update-alternatives/</loc>
     
     <lastmod>2024-07-27</lastmod>
     
   </url>
   
   <url>
-    <loc>https://bitmingw.com/2019/08/28/ubuntu-update-alternatives/</loc>
+    <loc>https://bitmingw.com/2019/06/09/easy-to-understand-quantum-computing/</loc>
     
     <lastmod>2024-07-27</lastmod>
     
@@ -450,6 +450,13 @@
   </url>
   
   <url>
+    <loc>https://bitmingw.com/2017/01/05/argument-writing-framework/</loc>
+    
+    <lastmod>2024-07-27</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://bitmingw.com/2017/01/22/use-sudo-in-scripts/</loc>
     
     <lastmod>2024-07-27</lastmod>
@@ -486,13 +493,6 @@
   
   <url>
     <loc>https://bitmingw.com/2017/03/19/lovelive-sif-free-play-guide/</loc>
-    
-    <lastmod>2024-07-27</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://bitmingw.com/2017/01/05/argument-writing-framework/</loc>
     
     <lastmod>2024-07-27</lastmod>
     
@@ -893,6 +893,13 @@
   </url>
   
   <url>
+    <loc>https://bitmingw.com/tags/writing/</loc>
+    <lastmod>2024-07-27</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://bitmingw.com/tags/Linux/</loc>
     <lastmod>2024-07-27</lastmod>
     <changefreq>daily</changefreq>
@@ -915,13 +922,6 @@
   
   <url>
     <loc>https://bitmingw.com/tags/spacemacs/</loc>
-    <lastmod>2024-07-27</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://bitmingw.com/tags/writing/</loc>
     <lastmod>2024-07-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1117,14 +1117,14 @@
   </url>
   
   <url>
-    <loc>https://bitmingw.com/tags/quantum-computing/</loc>
+    <loc>https://bitmingw.com/tags/ubuntu/</loc>
     <lastmod>2024-07-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://bitmingw.com/tags/ubuntu/</loc>
+    <loc>https://bitmingw.com/tags/quantum-computing/</loc>
     <lastmod>2024-07-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
